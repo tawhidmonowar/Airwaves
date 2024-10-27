@@ -1,14 +1,14 @@
 package org.tawhid.airwaves
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.tawhid.airwaves.navigation.graphs.RootNavGraph
+import org.tawhid.airwaves.theme.AppTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    AppTheme( "Dark Mode", true) {
         RootNavGraph()
     }
 }

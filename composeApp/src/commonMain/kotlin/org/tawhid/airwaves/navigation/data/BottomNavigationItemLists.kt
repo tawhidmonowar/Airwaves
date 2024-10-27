@@ -6,6 +6,7 @@ import airwaves.composeapp.generated.resources.home
 import airwaves.composeapp.generated.resources.ic_book
 import airwaves.composeapp.generated.resources.ic_home_filled
 import airwaves.composeapp.generated.resources.ic_podcasts
+import airwaves.composeapp.generated.resources.ic_radio_filled
 import airwaves.composeapp.generated.resources.ic_radio_outlined
 import airwaves.composeapp.generated.resources.podcasts
 import airwaves.composeapp.generated.resources.radios
@@ -24,7 +25,7 @@ val BottomNavigationItemLists = listOf(
         route = MainRouteScreen.Podcasts.route,
     ),
     BottomNavigationItem(
-        icon = Res.drawable.ic_radio_outlined,
+        icon = Res.drawable.ic_radio_filled,
         title = Res.string.radios,
         route = MainRouteScreen.Radios.route
     ),
