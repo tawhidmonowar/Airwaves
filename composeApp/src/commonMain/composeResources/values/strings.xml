@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Airwaves</string>
+
+    <string name="home">Home</string>
+    <string name="podcasts">Podcasts</string>
+    <string name="radios">Radios</string>
+    <string name="audio_books">Audio Books</string>
+
+    <string name="search">Search</string>
+    <string name="theme">Theme</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="setting">Setting</string>
+    <string name="retry">Retry</string>
+    <string name="go_back">Go Back</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_default">System Default</string>
+    <string name="choose_a_theme">Choose a theme</string>
+</resources>
