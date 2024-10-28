@@ -18,3 +18,6 @@ val shimmerColors = listOf(
     shimmer.copy(alpha = 0.5f),
     shimmer.copy(alpha = 0.3f),
 )
+
+
+val light_gray = Color(0xFFf7f7f7)

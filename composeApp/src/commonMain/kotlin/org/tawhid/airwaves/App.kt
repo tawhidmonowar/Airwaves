@@ -8,7 +8,7 @@ import org.tawhid.airwaves.theme.AppTheme
 @Composable
 @Preview
 fun App() {
-    AppTheme( "Dark Mode", true) {
+    AppTheme( "Dark Mode", false) {
         RootNavGraph()
     }
 }
