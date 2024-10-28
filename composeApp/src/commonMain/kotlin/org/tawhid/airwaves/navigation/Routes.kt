@@ -1,17 +1,21 @@
 package org.tawhid.airwaves.navigation
 
 object Graph {
-    const val RootScreenGraph = "rootScreenGraph"
-    const val MainScreenGraph = "mainScreenGraph"
+    const val ROOT_SCREEN_GRAPH = "rootScreenGraph"
+    const val MAIN_SCREEN_GRAPH = "mainScreenGraph"
 }
 
-sealed class MainRouteScreen(val route: String) {
-    object Home : MainRouteScreen("home")
-    object Podcasts : MainRouteScreen("podcasts")
-    object Radios : MainRouteScreen("radios")
-    object AudioBooks : MainRouteScreen("audioBooks")
+sealed class MainScreenRoute(val route: String) {
+    object Home : MainScreenRoute("home")
+    object Podcasts : MainScreenRoute("podcasts")
+    object Radios : MainScreenRoute("radios")
+    object AudioBooks : MainScreenRoute("audioBooks")
 }
 
-sealed class SettingRouteScreen(val route: String) {
-    object Setting : SettingRouteScreen("setting")
+sealed class SettingScreenRoute(val route: String) {
+    object Setting : SettingScreenRoute("setting")
+}
+
+sealed class RadioDetailsScreenRoute(val route: String) {
+    object RadioDetails : RadioDetailsScreenRoute("radioDetails")
 }

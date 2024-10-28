@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import coil3.compose.AsyncImage
-import org.tawhid.airwaves.data.model.radios.RadioData
+import org.tawhid.airwaves.data.models.radio.RadioData
 import org.tawhid.airwaves.theme.mediumPadding
 
 import androidx.compose.foundation.background

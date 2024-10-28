@@ -9,7 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import org.jetbrains.compose.resources.StringResource
-import org.tawhid.airwaves.data.model.radios.RadioData
+import org.tawhid.airwaves.data.models.radio.RadioData
 
 enum class Theme(val title: StringResource) {
     SYSTEM_DEFAULT(Res.string.system_default),

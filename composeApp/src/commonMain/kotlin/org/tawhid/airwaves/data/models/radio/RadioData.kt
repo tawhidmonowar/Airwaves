@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.data.model.radios
+package org.tawhid.airwaves.data.models.radio
 
 data class RadioData(
     val bitrate: Int,

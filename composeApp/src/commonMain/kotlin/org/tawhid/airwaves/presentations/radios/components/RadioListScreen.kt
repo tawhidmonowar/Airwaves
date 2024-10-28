@@ -9,15 +9,20 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
+import org.tawhid.airwaves.data.models.radio.RadioData
+import org.tawhid.airwaves.navigation.RadioDetailsScreenRoute
 import org.tawhid.airwaves.theme.cardMinSize
 import org.tawhid.airwaves.theme.mediumPadding
 import org.tawhid.airwaves.utils.DeviceType
 import org.tawhid.airwaves.utils.getDeviceType
-import org.tawhid.airwaves.utils.radios
 
 
 @Composable
-fun RadioListScreen() {
+fun RadioListScreen(
+    radios: List<RadioData>,
+    navController: NavController
+) {
 
     val isDesktop = remember {
         getDeviceType() == DeviceType.Desktop
@@ -32,7 +37,7 @@ fun RadioListScreen() {
     ) {
         items(radios, key = { it.changeuuid }) { radio ->
             RadioThumbnail(radioData = radio, onClick = {
-
+                navController.navigate(RadioDetailsScreenRoute.RadioDetails.route)
             })
         }
     }

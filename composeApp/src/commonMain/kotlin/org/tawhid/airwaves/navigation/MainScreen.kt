@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import org.tawhid.airwaves.navigation.data.BottomNavigationItemLists
+import org.tawhid.airwaves.navigation.data.BottomNavigationItemList
 import org.tawhid.airwaves.navigation.graphs.MainNavGraph
 
 
@@ -47,7 +47,7 @@ fun MainScreen(rootNavController: NavHostController) {
                 },
                 actions = {
                     IconButton(onClick = {
-                        rootNavController.navigate(SettingRouteScreen.Setting.route)
+                        rootNavController.navigate(SettingScreenRoute.Setting.route)
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Settings,
@@ -60,7 +60,7 @@ fun MainScreen(rootNavController: NavHostController) {
         },
         bottomBar = {
             BottomNavigationBar(
-                bottomNavigationItems = BottomNavigationItemLists,
+                bottomNavigationItems = BottomNavigationItemList,
                 currentRoute = currentRoute,
                 onItemClick = { currentBottomNavigationItem ->
 

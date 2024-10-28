@@ -1,0 +1,74 @@
+package org.tawhid.airwaves.presentations.radios.details
+
+import airwaves.composeapp.generated.resources.Res
+import airwaves.composeapp.generated.resources.radios
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import org.tawhid.airwaves.data.models.radio.RadioData
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+
+import androidx.compose.ui.text.font.FontWeight
+
+import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.theme.mediumPadding
+import org.tawhid.airwaves.theme.xLargePadding
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RadioDetailScreen(
+    navController: NavController,
+    currentRadio: RadioData
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                title = {
+                    Text(
+                        text = stringResource(Res.string.radios),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
+            )
+        },
+    ){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(mediumPadding),
+            contentPadding = PaddingValues(horizontal = xLargePadding),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(mediumPadding)
+        ){
+            item {
+                Text(text = currentRadio.name)
+                Text(text = currentRadio.url)
+            }
+            item {
+                Text(text = currentRadio.name)
+                Text(text = currentRadio.url)
+            }
+        }
+    }
+}

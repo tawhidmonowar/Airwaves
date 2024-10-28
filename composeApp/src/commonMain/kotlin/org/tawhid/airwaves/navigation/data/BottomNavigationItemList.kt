@@ -7,32 +7,31 @@ import airwaves.composeapp.generated.resources.ic_book
 import airwaves.composeapp.generated.resources.ic_home_filled
 import airwaves.composeapp.generated.resources.ic_podcasts
 import airwaves.composeapp.generated.resources.ic_radio_filled
-import airwaves.composeapp.generated.resources.ic_radio_outlined
 import airwaves.composeapp.generated.resources.podcasts
 import airwaves.composeapp.generated.resources.radios
-import org.tawhid.airwaves.navigation.MainRouteScreen
+import org.tawhid.airwaves.navigation.MainScreenRoute
 
-val BottomNavigationItemLists = listOf(
+val BottomNavigationItemList = listOf(
 
     BottomNavigationItem(
         icon = Res.drawable.ic_home_filled,
         title = Res.string.home,
-        route = MainRouteScreen.Home.route
+        route = MainScreenRoute.Home.route
     ),
     BottomNavigationItem(
         icon = Res.drawable.ic_podcasts,
         title = Res.string.podcasts,
-        route = MainRouteScreen.Podcasts.route,
+        route = MainScreenRoute.Podcasts.route,
     ),
     BottomNavigationItem(
         icon = Res.drawable.ic_radio_filled,
         title = Res.string.radios,
-        route = MainRouteScreen.Radios.route
+        route = MainScreenRoute.Radios.route
     ),
     BottomNavigationItem(
         icon = Res.drawable.ic_book,
         title = Res.string.audio_books,
-        route = MainRouteScreen.AudioBooks.route
+        route = MainScreenRoute.AudioBooks.route
     )
 
 )

@@ -24,4 +24,6 @@
     <string name="retry">Retry</string>
     <string name="go_back">Go Back</string>
 
+    <string name="no_radios_found">"No Radios Found!"</string>
+
 </resources>
