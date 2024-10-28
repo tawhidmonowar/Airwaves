@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import coil3.compose.AsyncImage
-import org.tawhid.airwaves.data.models.radio.RadioData
 import org.tawhid.airwaves.theme.mediumPadding
 
 import androidx.compose.foundation.background
@@ -22,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.tawhid.airwaves.data.models.radio.RadioData
 
 import org.tawhid.airwaves.theme.imageSize
 
@@ -44,7 +44,7 @@ fun RadioThumbnail(
             modifier = Modifier
                 .size(imageSize)
                 .clip(RoundedCornerShape(10))
-                .background(Color.Gray),
+                .background(Color.White),
             model = radioData.favicon,
             //error = painterResource(Res.drawable.logo),
             contentScale = ContentScale.Crop,

@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.json.Json
+import org.tawhid.airwaves.data.models.radio.RadioData
 import org.tawhid.airwaves.navigation.Graph
 import org.tawhid.airwaves.navigation.MainScreen
 import org.tawhid.airwaves.navigation.RadioDetailsScreenRoute
 import org.tawhid.airwaves.navigation.SettingScreenRoute
 import org.tawhid.airwaves.presentations.radios.details.RadioDetailScreen
 import org.tawhid.airwaves.presentations.settings.SettingScreen
-import org.tawhid.airwaves.utils.radios
 
 @Composable
 fun RootNavGraph() {
@@ -27,7 +28,11 @@ fun RootNavGraph() {
             SettingScreen(rootNavController)
         }
         composable(route = RadioDetailsScreenRoute.RadioDetails.route) {
-            RadioDetailScreen(rootNavController, radios[0])
+            rootNavController.previousBackStackEntry?.savedStateHandle?.get<String>("radio")
+                ?.let {
+                    val radioData : RadioData = Json.decodeFromString(it)
+                    RadioDetailScreen(rootNavController, radioData)
+                }
         }
     }
 }

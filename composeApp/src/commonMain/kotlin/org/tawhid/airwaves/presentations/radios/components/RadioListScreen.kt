@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import kotlinx.serialization.json.Json
 import org.tawhid.airwaves.data.models.radio.RadioData
 import org.tawhid.airwaves.navigation.RadioDetailsScreenRoute
 import org.tawhid.airwaves.theme.cardMinSize
@@ -17,10 +18,14 @@ import org.tawhid.airwaves.theme.mediumPadding
 import org.tawhid.airwaves.utils.DeviceType
 import org.tawhid.airwaves.utils.getDeviceType
 
+import kotlinx.serialization.encodeToString
+
+
+
 
 @Composable
 fun RadioListScreen(
-    radios: List<RadioData>,
+    radioData: List<RadioData>,
     navController: NavController
 ) {
 
@@ -35,8 +40,12 @@ fun RadioListScreen(
         contentPadding = PaddingValues(mediumPadding)
         ,
     ) {
-        items(radios, key = { it.changeuuid }) { radio ->
+        items(radioData, key = { it.stationuuid }) { radio ->
             RadioThumbnail(radioData = radio, onClick = {
+                val radioDataStr = Json.encodeToString(radio)
+                navController.currentBackStackEntry?.savedStateHandle?.apply {
+                    set("radio", radioDataStr)
+                }
                 navController.navigate(RadioDetailsScreenRoute.RadioDetails.route)
             })
         }

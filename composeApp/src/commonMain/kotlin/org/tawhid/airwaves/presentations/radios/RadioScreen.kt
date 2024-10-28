@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
 import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.data.repository.radio.RadioRepository
 import org.tawhid.airwaves.presentations.radios.components.EmptyContent
 import org.tawhid.airwaves.presentations.radios.components.RadioListScreen
 import org.tawhid.airwaves.presentations.radios.components.ShimmerEffect
@@ -19,7 +20,7 @@ fun RadioScreen(
 ) {
 
     val radioScreenViewModel = viewModel {
-        RadioScreenViewModel()
+        RadioScreenViewModel(RadioRepository())
     }
 
     val uiState by radioScreenViewModel.uiState.collectAsState()

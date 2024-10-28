@@ -7,7 +7,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import org.tawhid.airwaves.data.models.radio.RadioData
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
 import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.data.models.radio.RadioData
 import org.tawhid.airwaves.theme.mediumPadding
 import org.tawhid.airwaves.theme.xLargePadding
 
