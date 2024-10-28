@@ -17,6 +17,8 @@ enum class Theme(val title: StringResource) {
     DARK_MODE(Res.string.dark_mode)
 }
 
+const val BASE_URL_RADIO = "https://de1.api.radio-browser.info/json/"
+
 enum class DeviceType {
     Mobile, Desktop
 }
@@ -29,6 +31,7 @@ val FadeIn = fadeIn(animationSpec = tween(220, delayMillis = 90)) +
 
 val FadeOut = fadeOut(animationSpec = tween(90))
 
+/*
 val radios: List<RadioData> = listOf(
     RadioData(
         changeuuid = "01234567-89ab-cdef-0123-456789abcdgef",
@@ -259,3 +262,4 @@ val radios: List<RadioData> = listOf(
         serveruuid = null
     )
 )
+*/
