@@ -1,6 +1,7 @@
 package org.tawhid.airwaves.presentations.radios
 
 import airwaves.composeapp.generated.resources.Res
+import airwaves.composeapp.generated.resources.ic_retry
 import airwaves.composeapp.generated.resources.no_radios_found
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,13 +33,22 @@ fun RadioScreen(
         },
         onSuccess = {
             if (it.isEmpty()) {
-                EmptyContent(stringResource(Res.string.no_radios_found))
+                EmptyContent(
+                    message = stringResource(Res.string.no_radios_found),
+                    icon = Res.drawable.ic_retry
+                )
             } else {
-                RadioListScreen(it,navController)
+                RadioListScreen(it, navController)
             }
         },
         onError = {
-            EmptyContent(it)
+            EmptyContent(
+                message = it,
+                icon = Res.drawable.ic_retry,
+                onRetryClick = {
+                    radioScreenViewModel.getRadios()
+                }
+            )
         }
     )
 }

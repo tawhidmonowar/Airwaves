@@ -23,7 +23,7 @@ class RadioScreenViewModel(
         getRadios()
     }
 
-    private fun getRadios() {
+    fun getRadios() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.emit(Resource.Loading)
             try {
