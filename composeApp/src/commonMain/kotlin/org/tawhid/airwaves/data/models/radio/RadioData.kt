@@ -15,7 +15,7 @@ data class RadioData(
     @SerialName("clicktimestamp")
     val clicktimestamp: String,
     @SerialName("clicktimestamp_iso8601")
-    val clicktimestampIso8601: String,
+    val clicktimestampIso8601: String?,
     @SerialName("clicktrend")
     val clicktrend: Int,
     @SerialName("codec")
