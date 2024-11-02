@@ -30,6 +30,12 @@ kotlin {
 
             // Ktor
             implementation(libs.ktor.client.android)
+            //Media 3 Exo Player
+            implementation(libs.androidx.media3.exoplayer.v141)
+            implementation(libs.androidx.media3.exoplayer.dash.v141)
+            implementation(libs.androidx.media3.exoplayer.hls)
+            implementation(libs.androidx.media3.ui)
+            implementation(libs.androidx.media3.session)
 
         }
         commonMain.dependencies {
@@ -56,12 +62,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
-
-            //Media 3 Exo Player
-            implementation(libs.androidx.media3.exoplayer.v141)
-            implementation(libs.androidx.media3.exoplayer.dash.v141)
-            implementation(libs.androidx.media3.ui)
-            implementation(libs.androidx.media3.session)
 
         }
         desktopMain.dependencies {
