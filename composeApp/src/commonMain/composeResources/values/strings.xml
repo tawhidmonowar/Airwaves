@@ -2,6 +2,7 @@
     <string name="app_name">Airwaves</string>
 
     <string name="home">Home</string>
+    <string name="sound_room">Sound Room</string>
     <string name="podcasts">Podcasts</string>
     <string name="radios">Online Radios</string>
     <string name="audio_books">Audio Books</string>

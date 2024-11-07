@@ -7,15 +7,17 @@ import airwaves.composeapp.generated.resources.ic_book
 import airwaves.composeapp.generated.resources.ic_home_filled
 import airwaves.composeapp.generated.resources.ic_podcasts
 import airwaves.composeapp.generated.resources.ic_radio_filled
+import airwaves.composeapp.generated.resources.ic_sound_room
 import airwaves.composeapp.generated.resources.podcasts
 import airwaves.composeapp.generated.resources.radios
+import airwaves.composeapp.generated.resources.sound_room
 import org.tawhid.airwaves.navigation.MainScreenRoute
 
 val BottomNavigationItemList = listOf(
 
     BottomNavigationItem(
-        icon = Res.drawable.ic_home_filled,
-        title = Res.string.home,
+        icon = Res.drawable.ic_sound_room,
+        title = Res.string.sound_room,
         route = MainScreenRoute.Home.route
     ),
     BottomNavigationItem(

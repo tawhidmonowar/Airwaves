@@ -1,5 +1,6 @@
 package org.tawhid.airwaves.presentations.radios.details
 
+
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.radios
 import androidx.compose.material3.IconButton
@@ -17,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.text.font.FontWeight
-import org.tawhid.airwaves.player.AudioPlayer
 
 import org.jetbrains.compose.resources.stringResource
 import org.tawhid.airwaves.data.models.radio.RadioData
@@ -69,18 +69,8 @@ fun RadioDetailScreen(
                 Text(text = currentRadio.url)
             }
             item {
-                AudioPlayer (
-                    modifier = Modifier.fillMaxWidth(),
-                    url = currentRadio.url,
-                    startTime = Color.Black,
-                    endTime = Color.Black,
-                    volumeIconColor = Color.Black,
-                    playIconColor = Color.Blue,
-                    sliderTrackColor = Color.LightGray,
-                    sliderIndicatorColor = Color.Blue
-                )
+
             }
         }
     }
 }
-
