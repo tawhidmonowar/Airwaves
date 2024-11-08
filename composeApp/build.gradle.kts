@@ -66,10 +66,15 @@ kotlin {
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
 
+            //Koin
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.lifecycle.viewmodel)
+
+            //dataStore
+            api(libs.datastore.preferences)
+            api(libs.datastore)
 
         }
         desktopMain.dependencies {
