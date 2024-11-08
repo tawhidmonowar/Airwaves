@@ -38,8 +38,9 @@ fun ClearDataDialog(
         },
 
         dismissButton = {
-            TextButton(onClick = onDismissRequest
-            ) { Text( stringResource(Res.string.cancel)) }
+            TextButton(
+                onClick = onDismissRequest
+            ) { Text(stringResource(Res.string.cancel)) }
         }
     )
 }
@@ -68,14 +69,15 @@ fun ThemeSelectionDialog(
                 )
                 Theme.entries.forEach { theme ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable { currentSelectedTheme = theme },
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable { currentSelectedTheme = theme },
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
                             selected = currentSelectedTheme == theme,
                             onClick = { currentSelectedTheme = theme },
-                            colors = RadioButtonDefaults.colors( selectedColor = MaterialTheme.colorScheme.primary )
+                            colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
                         )
                         Text(text = stringResource(theme.title))
                     }
@@ -83,7 +85,7 @@ fun ThemeSelectionDialog(
 
                 Spacer(modifier = Modifier.height(xLargePadding))
 
-                Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = onDismissRequest) {
                         Text(stringResource(Res.string.cancel))
                     }

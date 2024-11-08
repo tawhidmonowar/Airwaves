@@ -17,11 +17,13 @@ enum class Theme(val title: StringResource) {
     DARK_MODE(Res.string.dark_mode)
 }
 
-const val BASE_URL_RADIO = "https://de1.api.radio-browser.info/json/"
-
 enum class DeviceType {
     Mobile, Desktop
 }
+
+const val BASE_URL_RADIO = "https://de1.api.radio-browser.info/json/"
+
+const val DATA_STORE_FILE_NAME = "setting.preferences_pb"
 
 val FadeIn = fadeIn(animationSpec = tween(220, delayMillis = 90)) +
         scaleIn(

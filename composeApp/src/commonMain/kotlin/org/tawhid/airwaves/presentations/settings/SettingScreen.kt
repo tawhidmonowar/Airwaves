@@ -19,31 +19,40 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.data.repository.radio.RadioRepository
+import org.tawhid.airwaves.presentations.radios.RadioScreenViewModel
 import org.tawhid.airwaves.presentations.settings.components.ClearDataDialog
 import org.tawhid.airwaves.presentations.settings.components.SettingItem
 import org.tawhid.airwaves.presentations.settings.components.ThemeSelectionDialog
+
 import org.tawhid.airwaves.utils.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
-    rootNavController: NavHostController
+    rootNavController: NavHostController,
+    settingScreenViewModel: SettingScreenViewModel
 ) {
+
     var showClearDataDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    val currentTheme by settingScreenViewModel.currentTheme.collectAsState()
 
     when {
         showThemeDialog -> {
             ThemeSelectionDialog(
-                currentTheme = Theme.LIGHT_MODE.name,
-                onThemeChange = {
+                currentTheme = currentTheme ?: Theme.SYSTEM_DEFAULT.name,
+                onThemeChange = { theme ->
+                    settingScreenViewModel.changeThemeMode(theme.name)
                     showThemeDialog = false
                 },
                 onDismissRequest = {
@@ -51,6 +60,7 @@ fun SettingScreen(
                 }
             )
         }
+
         showClearDataDialog -> {
             ClearDataDialog(
                 onDismissRequest = {
