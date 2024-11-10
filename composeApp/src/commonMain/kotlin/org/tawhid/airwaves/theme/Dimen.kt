@@ -15,5 +15,3 @@ val xxxLargePadding = 48.dp
 
 val cardMinSize = 360.dp
 val imageSize = 120.dp
-
-var cornerRadius_small = 20.dp

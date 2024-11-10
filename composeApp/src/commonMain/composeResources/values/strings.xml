@@ -2,10 +2,9 @@
     <string name="app_name">Airwaves</string>
 
     <string name="home">Home</string>
-    <string name="sound_room">Sound Room</string>
     <string name="podcasts">Podcasts</string>
-    <string name="radios">Online Radios</string>
-    <string name="audio_books">Audio Books</string>
+    <string name="radios">Radios</string>
+    <string name="books">Books</string>
 
     <string name="setting">Setting</string>
     <string name="theme">Theme</string>
@@ -26,5 +25,6 @@
     <string name="go_back">Go Back</string>
 
     <string name="no_radios_found">"No Radios Found!"</string>
+    <string name="online_radio_stations">Online Radio Stations</string>
 
 </resources>

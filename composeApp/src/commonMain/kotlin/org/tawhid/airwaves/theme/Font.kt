@@ -25,9 +25,7 @@ fun LexendFontFamily() = FontFamily(
 
 @Composable
 fun LexendTypography() = Typography().run {
-
     val fontFamily = LexendFontFamily()
-
     copy(
         displayLarge = displayLarge.copy(fontFamily = fontFamily),
         displayMedium = displayMedium.copy(fontFamily = fontFamily),
@@ -38,11 +36,11 @@ fun LexendTypography() = Typography().run {
         titleLarge = titleLarge.copy(fontFamily = fontFamily),
         titleMedium = titleMedium.copy(fontFamily = fontFamily),
         titleSmall = titleSmall.copy(fontFamily = fontFamily),
-        bodyLarge = bodyLarge.copy(fontFamily =  fontFamily),
-        bodyMedium = bodyMedium.copy(fontFamily = fontFamily),
-        bodySmall = bodySmall.copy(fontFamily = fontFamily),
         labelLarge = labelLarge.copy(fontFamily = fontFamily),
         labelMedium = labelMedium.copy(fontFamily = fontFamily),
-        labelSmall = labelSmall.copy(fontFamily = fontFamily)
+        labelSmall = labelSmall.copy(fontFamily = fontFamily),
+        bodyLarge = bodyLarge.copy(fontFamily = fontFamily),
+        bodyMedium = bodyMedium.copy(fontFamily = fontFamily),
+        bodySmall = bodySmall.copy(fontFamily = fontFamily)
     )
 }
