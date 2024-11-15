@@ -12,11 +12,11 @@ import org.tawhid.airwaves.navigation.RadioDetailsScreenRoute
 import org.tawhid.airwaves.navigation.SettingScreenRoute
 import org.tawhid.airwaves.presentations.radios.details.RadioDetailScreen
 import org.tawhid.airwaves.presentations.settings.SettingScreen
-import org.tawhid.airwaves.presentations.settings.SettingScreenViewModel
+import org.tawhid.airwaves.presentations.settings.SettingViewModel
 
 @Composable
 fun RootNavGraph(
-    settingScreenViewModel: SettingScreenViewModel
+    settingViewModel: SettingViewModel
 ) {
     val rootNavController = rememberNavController()
     NavHost(
@@ -28,7 +28,7 @@ fun RootNavGraph(
             MainScreen(rootNavController)
         }
         composable(route = SettingScreenRoute.Setting.route) {
-            SettingScreen(rootNavController, settingScreenViewModel)
+            SettingScreen(rootNavController, settingViewModel)
         }
         composable(route = RadioDetailsScreenRoute.RadioDetails.route) {
             rootNavController.previousBackStackEntry?.savedStateHandle?.get<String>("radio")

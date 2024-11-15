@@ -9,8 +9,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.tawhid.airwaves.utils.AppPreferences
 
-class SettingScreenViewModel(
-    private val appPreferences: AppPreferences
+class SettingViewModel(
+    private val appPreferences: AppPreferences,
 ) : ViewModel() {
 
     private val _currentTheme: MutableStateFlow<String?> = MutableStateFlow(null)
@@ -21,8 +21,7 @@ class SettingScreenViewModel(
     }
 
     private fun getCurrentTheme() = runBlocking {
-        _currentTheme.value = appPreferences.getCurrentTheme()
-
+        _currentTheme.value = appPreferences.getTheme()
     }
 
     fun changeThemeMode(value: String) = viewModelScope.launch(Dispatchers.IO) {
