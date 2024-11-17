@@ -265,3 +265,29 @@ val radios: List<RadioData> = listOf(
     )
 )
 */
+
+
+val radioGenre: List<String> = listOf(
+    "pop",
+    "music",
+    "news",
+    "rock",
+    "classical",
+    "talk",
+    "islamic",
+    "dance",
+    "jazz",
+    "country",
+    "alternative",
+    "folk",
+    "information",
+    "regional",
+    "oldies",
+    "sports",
+    "electronic",
+    "culture",
+    "hiphop",
+    "world music",
+    "religious",
+    "hits"
+)

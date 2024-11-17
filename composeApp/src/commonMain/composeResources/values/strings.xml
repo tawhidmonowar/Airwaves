@@ -21,6 +21,7 @@
     <string name="choose_a_theme">Choose a theme</string>
 
     <string name="search">Search</string>
+    <string name="search_radios">Search Radios</string>
     <string name="retry">Retry</string>
     <string name="go_back">Go Back</string>
 

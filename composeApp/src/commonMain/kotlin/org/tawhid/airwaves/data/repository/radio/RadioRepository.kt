@@ -17,8 +17,8 @@ import org.tawhid.airwaves.utils.BASE_URL_RADIO
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 
-
 class RadioRepository {
+
     private val httpClient = HttpClient {
         defaultRequest {
             url(BASE_URL_RADIO)
@@ -58,6 +58,7 @@ class RadioRepository {
             parameter("order","clickcount")
         }
     }
+
     suspend fun searchRadios(query: String) : HttpResponse {
         return httpClient.get {
             url("stations/search")

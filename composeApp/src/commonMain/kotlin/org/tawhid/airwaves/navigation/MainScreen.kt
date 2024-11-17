@@ -61,21 +61,19 @@ fun MainScreen(rootNavController: NavHostController) {
             )
         }
     ) { innerPadding ->
+        MainNavGraph(rootNavController, homeNavController, innerPadding)
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            MainNavGraph(rootNavController, homeNavController, innerPadding)
             PlayingOverlay(
                 isPlaying = true,
                 onButtonClick = {
-
                 },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .zIndex(1f)
-                    .padding(5.dp)
                     .clip(shape = MaterialTheme.shapes.medium)
             )
         }

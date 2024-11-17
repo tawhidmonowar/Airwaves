@@ -18,43 +18,38 @@ import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent
 actual class PlayerController {
 
     private val audioPlayerComponent = AudioPlayerComponent()
+    val options = arrayOf(
+        ":network-caching=1000",  // Adjust cache as needed (1000 ms)
+        ":https-user-agent=Mozilla/5.0"  // Set a user agent to avoid blocking issues
+    )
 
     actual fun prepare(pathSource: String) {
 
-        audioPlayerComponent.mediaPlayer().media().startPaused(pathSource)
+        audioPlayerComponent.mediaPlayer().media().startPaused(pathSource ,*options)
         audioPlayerComponent.mediaPlayer().media().parsing().parse();
         audioPlayerComponent.mediaPlayer().controls().play()
 
-
-
-        audioPlayerComponent.mediaPlayer().events()
-            .addMediaEventListener(object : MediaEventAdapter() {
+        audioPlayerComponent.mediaPlayer().events().addMediaEventListener(object : MediaEventAdapter() {
                 override fun mediaParsedChanged(media: Media?, newStatus: MediaParsedStatus?) {
-
-                    val mediaPlayer = audioPlayerComponent.mediaPlayer();
-                    val audioTracks = mediaPlayer.media().meta().get(Meta.NOW_PLAYING)
-                    val titleCount = mediaPlayer.media().info().textTracks()
-
-                    println("Media Parsed: $titleCount")
                     super.mediaParsedChanged(media, newStatus)
                 }
 
                 override fun mediaMetaChanged(media: Media?, metaType: Meta?) {
 
-                    val nowPlaying = audioPlayerComponent.mediaPlayer().media().meta().get(Meta.NOW_PLAYING)
+                    val nowPlaying =
+                        audioPlayerComponent.mediaPlayer().media().meta().get(Meta.NOW_PLAYING)
                     println("Now Playing: $nowPlaying")
 
                     val title = audioPlayerComponent.mediaPlayer().media().meta().get(Meta.TITLE)
                     println("Title: $title")
 
-                    val dec = audioPlayerComponent.mediaPlayer().media().meta().get(Meta.DESCRIPTION)
-                    println("Now Playing: $dec")
+                    val dec = audioPlayerComponent.mediaPlayer().media().meta().get(Meta.GENRE)
+                    println("Dec: $dec")
 
                     super.mediaMetaChanged(media, metaType)
                 }
 
-            })
-
+        })
 
     }
 

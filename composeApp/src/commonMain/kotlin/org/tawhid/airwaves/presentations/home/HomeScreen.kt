@@ -27,7 +27,7 @@ fun HomeScreen() {
         contentAlignment = Alignment.Center
     ) {
         Button( onClick = {
-            viewModel.getHelloWorldString()
+            viewModel.PlaySound("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
         }) {
             Text(text = name)
         }

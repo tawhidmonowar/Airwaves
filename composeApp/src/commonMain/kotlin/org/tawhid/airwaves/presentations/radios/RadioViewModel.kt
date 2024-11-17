@@ -12,7 +12,7 @@ import org.tawhid.airwaves.data.models.radio.RaidoResponseError
 import org.tawhid.airwaves.data.repository.radio.RadioRepository
 import org.tawhid.airwaves.utils.Resource
 
-class RadioScreenViewModel(
+class RadioViewModel(
     private val radioRepository: RadioRepository
 ) : ViewModel() {
 

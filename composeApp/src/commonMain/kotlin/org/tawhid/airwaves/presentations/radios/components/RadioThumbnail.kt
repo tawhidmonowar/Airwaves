@@ -14,6 +14,7 @@ import coil3.compose.AsyncImage
 import org.tawhid.airwaves.theme.mediumPadding
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,25 +37,25 @@ fun RadioThumbnail(
             .shadow(2.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
             .clickable(onClick = onClick)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(mediumPadding),
         horizontalArrangement = Arrangement.spacedBy(mediumPadding),
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .size(imageSize)
-                .clip(RoundedCornerShape(10))
-                .background(Color.White),
-            model = radioData.favicon,
-            //error = painterResource(Res.drawable.logo),
-            contentScale = ContentScale.Crop,
-            contentDescription = null
-        )
-
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(mediumPadding)
+            modifier = Modifier.fillMaxWidth(),
         ) {
+
+            AsyncImage(
+                modifier = Modifier
+                    .size(imageSize)
+                    .clip(RoundedCornerShape(10))
+                    .background(Color.White),
+                model = radioData.favicon,
+                //error = painterResource(Res.drawable.logo),
+                contentScale = ContentScale.Crop,
+                contentDescription = null
+            )
+
             Text(
                 text = radioData.name,
                 style = MaterialTheme.typography.titleMedium,
@@ -68,6 +69,7 @@ fun RadioThumbnail(
                     text = radioData.homepage,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
@@ -76,6 +78,7 @@ fun RadioThumbnail(
                 text = radioData.url,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
