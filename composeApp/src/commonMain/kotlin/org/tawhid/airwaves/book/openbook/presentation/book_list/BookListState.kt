@@ -6,6 +6,7 @@ import org.tawhid.airwaves.core.presentation.UiText
 data class BookListState(
     val searchQuery: String = "Kotlin",
     val searchResult: List<Book> = emptyList(),
+    val trendingBooks: List<Book> = emptyList(),
     val savedBooks: List<Book> = emptyList(),
     val isLoading: Boolean = false,
     val selectedTabIndex: Int = 0,

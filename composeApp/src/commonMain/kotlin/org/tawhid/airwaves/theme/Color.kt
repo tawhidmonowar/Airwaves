@@ -11,6 +11,11 @@ val shimmerColors = listOf(
     shimmer.copy(alpha = 0.3f),
 )
 
+val DarkBlue = Color(0xFF0B405E)
+val DesertWhite = Color(0xFFF7F7F7)
+val SandYellow = Color(0xFFFFBD64)
+val LightBlue = Color(0xFF9AD9FF)
+
 val primaryLight = Color(0xFF1E88E5)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFF0057FF)
@@ -226,4 +231,7 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF191B25)
 val surfaceContainerDarkHighContrast = Color(0xFF1D1F29)
 val surfaceContainerHighDarkHighContrast = Color(0xFF272933)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF32343E)
+
+
+
 

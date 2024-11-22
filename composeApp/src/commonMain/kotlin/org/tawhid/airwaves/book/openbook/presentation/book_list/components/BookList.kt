@@ -31,7 +31,7 @@ fun BookList(
             items = books,
             key = { it.id }
         ) { book ->
-            BookListItem(
+/*            BookListItem(
                 book = book,
                 modifier = Modifier
                     .widthIn(max = 700.dp)
@@ -40,7 +40,7 @@ fun BookList(
                 onClick = {
                     onBookClick(book)
                 }
-            )
+            )*/
         }
     }
 }

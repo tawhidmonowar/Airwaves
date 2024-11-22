@@ -8,8 +8,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -18,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,25 +38,31 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.tawhid.airwaves.app.navigation.components.BottomNavigationBar
 import org.tawhid.airwaves.app.navigation.components.NavigationSideBar
 import org.tawhid.airwaves.app.navigation.components.navigationItemsLists
-import org.tawhid.airwaves.book.BookHomeScreenRoot
-import org.tawhid.airwaves.book.BookScreenViewModel
-import org.tawhid.airwaves.book.pdfbook.presentation.SelectedBookViewModel
-import org.tawhid.airwaves.book.pdfbook.presentation.pdfbook_detail.BookDetailAction
-import org.tawhid.airwaves.book.pdfbook.presentation.pdfbook_detail.BookDetailScreenRoot
-import org.tawhid.airwaves.book.pdfbook.presentation.pdfbook_detail.BookDetailViewModel
+import org.tawhid.airwaves.book.openbook.presentation.SelectedBookViewModel
+import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailAction
+import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailScreenRoot
+import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailViewModel
+import org.tawhid.airwaves.book.presentation.BookHomeScreenRoot
+import org.tawhid.airwaves.book.presentation.BookHomeViewModel
+import org.tawhid.airwaves.core.presentation.setting.SettingScreenRoot
+import org.tawhid.airwaves.core.presentation.setting.SettingViewModel
 import org.tawhid.airwaves.presentations.home.HomeScreen
 import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
 import org.tawhid.airwaves.utils.DeviceType
 import org.tawhid.airwaves.utils.getDeviceType
 
 @Composable
-fun NavigationScreenRoot() {
-    NavigationScreen()
+fun NavigationScreenRoot(
+    settingViewModel: SettingViewModel = koinViewModel()
+) {
+    NavigationScreen(settingViewModel)
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
-private fun NavigationScreen() {
+private fun NavigationScreen(
+    settingViewModel: SettingViewModel
+) {
     val windowSizeClass = calculateWindowSizeClass()
     val isMediumExpandedWWSC by remember(windowSizeClass) {
         derivedStateOf {
@@ -113,18 +124,32 @@ private fun NavigationScreen() {
             getDeviceType() == DeviceType.Desktop
         }
 
-        val padding = if (isDesktop) {
+        val contentPadding = if (isDesktop) {
             PaddingValues(start = 80.dp)
         } else {
-            innerPadding
+            if (isMediumExpandedWWSC && isMainScreenVisible) {
+                PaddingValues(start = 80.dp)
+            } else {
+                innerPadding
+            }
         }
 
         NavHost(
             navController = rootNavController,
             startDestination = Graph.NAVIGATION_SCREEN_GRAPH,
         ) {
-            navGraph(rootNavController = rootNavController, innerPadding = padding)
+            navGraph(rootNavController = rootNavController, innerPadding = contentPadding)
+            composable<Route.Setting> {
+                SettingScreenRoot(
+                    viewModel = settingViewModel,
+                    onBackClick = {
+                        rootNavController.navigateUp()
+                    }
+                )
+            }
         }
+
+
 
         AnimatedVisibility(
             visible = isMediumExpandedWWSC && isMainScreenVisible,
@@ -163,8 +188,7 @@ private fun NavGraphBuilder.navGraph(
             PodcastsScreen()
         }
         composable(route = NavigationScreenRoute.Book.route) {
-
-            val bookScreenViewModel = koinViewModel<BookScreenViewModel>()
+            val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
             val selectedBookViewModel =
                 it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
 
@@ -173,11 +197,16 @@ private fun NavGraphBuilder.navGraph(
             }
 
             BookHomeScreenRoot(
-                bookScreenViewModel = bookScreenViewModel,
+                viewModel = bookHomeViewModel,
                 onBookClick = { book ->
                     selectedBookViewModel.onSelectBook(book)
                     rootNavController.navigate(
                         Route.BookDetail(book.id)
+                    )
+                },
+                onSettingClick = {
+                    rootNavController.navigate(
+                        Route.Setting
                     )
                 },
                 innerPadding = innerPadding

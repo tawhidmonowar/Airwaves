@@ -8,6 +8,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import org.jetbrains.compose.resources.StringResource
 import org.tawhid.airwaves.data.models.radio.RadioData
 
@@ -17,11 +23,13 @@ enum class Theme(val title: StringResource) {
     DARK_MODE(Res.string.dark_mode)
 }
 
+
 enum class DeviceType {
     Mobile, Desktop
 }
 
 const val BASE_URL_RADIO = "https://de1.api.radio-browser.info/json/"
+const val BASE_URL_OPEN_BOOK = "https://openlibrary.org"
 
 const val DATA_STORE_FILE_NAME = "setting.preferences_pb"
 

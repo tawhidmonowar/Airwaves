@@ -22,7 +22,7 @@ import org.tawhid.airwaves.core.data.network.HttpClientFactory
 import org.tawhid.airwaves.player.PlayerRepository
 import org.tawhid.airwaves.player.PlayerRepositoryImpl
 import org.tawhid.airwaves.player.PlayerViewModel
-import org.tawhid.airwaves.presentations.settings.SettingViewModel
+import org.tawhid.airwaves.core.presentation.setting.SettingViewModel
 import org.tawhid.airwaves.utils.AppPreferences
 
 

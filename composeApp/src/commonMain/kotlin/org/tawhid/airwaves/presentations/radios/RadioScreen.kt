@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.tawhid.airwaves.data.repository.radio.RadioRepository
-import org.tawhid.airwaves.navigation.SettingScreenRoute
 import org.tawhid.airwaves.presentations.radios.components.EmptyContent
 import org.tawhid.airwaves.presentations.radios.components.RadioListScreen
 import org.tawhid.airwaves.presentations.radios.components.ShimmerEffect
@@ -97,7 +96,7 @@ fun RadioScreen(
 
                     }
                 }
-                TopAppBar(
+                /*TopAppBar(
                     title = {
                         Text(text = stringResource(Res.string.radios))
                     },
@@ -134,7 +133,7 @@ fun RadioScreen(
                         }
                     },
                     scrollBehavior = scrollBehavior
-                )
+                )*/
             }
         ) { innerPadding ->
             Box(

@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 kotlin {
@@ -17,29 +19,25 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_22)
         }
     }
-    
+
     jvm("desktop")
-    
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-
-            // Ktor
-            implementation(libs.ktor.client.android)
-            //Media 3 Exo Player
-            implementation(libs.androidx.media3.exoplayer.v141)
-            implementation(libs.androidx.media3.exoplayer.dash.v141)
-            implementation(libs.androidx.media3.exoplayer.hls)
-            implementation(libs.androidx.media3.ui)
-            implementation(libs.androidx.media3.session)
-
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
-
+            implementation(libs.bundles.exoplayer)
+            implementation(libs.ktor.client.android)
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -48,42 +46,33 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
 
-            //Navigation with Compose
             implementation(libs.navigation.compose)
-
-            // Ktor
-            implementation(libs.ktor.core)
-            implementation(libs.ktor.json)
-            implementation(libs.ktor.logging)
-            implementation(libs.ktor.negotiation)
+            implementation(libs.screen.size)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.lifecycle.viewmodel)
 
-            //Coil
-            implementation(libs.coil.compose.core)
-            implementation(libs.coil.compose)
-            implementation(libs.coil.mp)
-            implementation(libs.coil.network.ktor)
-
-            //Koin
+            implementation(libs.bundles.ktor)
+            implementation(libs.bundles.coil)
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-            implementation(libs.lifecycle.viewmodel)
 
-            //dataStore
             api(libs.datastore.preferences)
             api(libs.datastore)
-
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-
-            // ktor
-            implementation(libs.ktor.client.okhttp)
             implementation(libs.vlcj)
+        }
 
+        dependencies {
+            ksp(libs.androidx.room.compiler)
         }
     }
 }

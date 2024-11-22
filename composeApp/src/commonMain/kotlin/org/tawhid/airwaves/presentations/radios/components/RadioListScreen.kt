@@ -52,7 +52,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.tawhid.airwaves.data.models.radio.RadioData
-import org.tawhid.airwaves.navigation.RadioDetailsScreenRoute
 import org.tawhid.airwaves.theme.Shapes
 import org.tawhid.airwaves.theme.cardMinSize
 import org.tawhid.airwaves.theme.imageSize
@@ -107,7 +106,7 @@ fun RadioListScreen(
                 }
             }
 
-            items(radioData, key = { it.stationuuid }) { radio ->
+           /* items(radioData, key = { it.stationuuid }) { radio ->
                 RadioThumbnail(radioData = radio, onClick = {
                     val radioDataStr = Json.encodeToString(radio)
                     navController.currentBackStackEntry?.savedStateHandle?.apply {
@@ -115,7 +114,7 @@ fun RadioListScreen(
                     }
                     navController.navigate(RadioDetailsScreenRoute.RadioDetails.route)
                 })
-            }
+            }*/
         }
     }
 }

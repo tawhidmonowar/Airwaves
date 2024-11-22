@@ -134,7 +134,6 @@ fun PlayingOverlay(
                         Text(text = "Song Name", maxLines = 1, color = MaterialTheme.colorScheme.onPrimary)
                         Text(
                             modifier = Modifier.basicMarquee(
-                                delayMillis = 0,
                                 initialDelayMillis = 0,
                                 iterations = Int.MAX_VALUE,
                             ),

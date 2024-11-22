@@ -16,6 +16,7 @@ class BookHomeViewModel : ViewModel() {
                     it.copy(selectedTabIndex = action.index)
                 }
             }
+            else -> Unit
         }
     }
 }

@@ -51,11 +51,11 @@ import kotlin.math.round
 fun BookListItem(
     book: Book,
     onClick: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Surface(
         shape = RoundedCornerShape(30.dp),
-        modifier = modifier.clickable(
+        modifier = modifier.padding(10.dp).clickable(
             onClick = onClick
         ),
         color = LightBlue.copy(alpha = 0.2f)

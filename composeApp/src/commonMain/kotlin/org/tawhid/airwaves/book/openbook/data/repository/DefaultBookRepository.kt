@@ -26,9 +26,17 @@ class DefaultBookRepository(
             }
     }
 
+    override suspend fun getTrendingBooks(): Result<List<Book>, DataError.Remote> {
+        return remoteBookDataSource
+            .getTrendingBooks()
+            .map { dto ->
+                dto.results.map { it.toBook() }
+            }
+    }
+
     override suspend fun getBookDescription(bookId: String): Result<String?, DataError> {
         val localResult = saveBookDao.getSavedBook(bookId)
-        return if (localResult==null) {
+        return if (localResult == null) {
             remoteBookDataSource
                 .getBookDetails(bookId)
                 .map { it.description }

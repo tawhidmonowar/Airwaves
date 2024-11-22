@@ -59,12 +59,13 @@ fun BottomNavigationBar(
 
 @Composable
 fun NavigationSideBar(
+    modifier: Modifier = Modifier,
     items: List<NavigationItem>,
     currentRoute: String?,
     onItemClick: (NavigationItem) -> Unit
 ) {
     NavigationRail(
-        modifier = Modifier.fillMaxHeight(),
+        modifier = modifier.fillMaxHeight(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
     ) {
         items.forEach { navigationItem ->

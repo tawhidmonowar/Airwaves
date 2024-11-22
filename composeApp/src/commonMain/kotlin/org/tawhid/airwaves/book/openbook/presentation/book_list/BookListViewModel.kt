@@ -35,7 +35,8 @@ class BookListViewModel(
     val state = _state
         .onStart {
             if (cachedBooks.isEmpty()) {
-                observeSearchQuery()
+                //observeSearchQuery()
+                getTrendingBooks()
             }
             observeSavedBooks()
         }
@@ -68,10 +69,13 @@ class BookListViewModel(
     private fun observeSavedBooks() {
         observeSaveJob?.cancel()
         observeSaveJob = bookRepository.getSavedBooks()
-            .onEach { favoriteBooks ->
+            .map { savedBooks ->
+                savedBooks.reversed()
+            }
+            .onEach { savedBooks ->
                 _state.update {
                     it.copy(
-                        savedBooks = favoriteBooks
+                        savedBooks = savedBooks
                     )
                 }
             }
@@ -124,10 +128,38 @@ class BookListViewModel(
                     it.copy(
                         searchResult = emptyList(),
                         isLoading = false,
-                        errorMsg = error.toUiText(),
+                        errorMsg = error.toUiText()
                     )
                 }
             }
 
+    }
+
+    private fun getTrendingBooks() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+        bookRepository.getTrendingBooks()
+            .onSuccess { trendingBooks ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMsg = null,
+                        trendingBooks = trendingBooks
+                    )
+                }
+            }
+
+            .onError { error ->
+                _state.update {
+                    it.copy(
+                        trendingBooks = emptyList(),
+                        isLoading = false,
+                        errorMsg = error.toUiText()
+                    )
+                }
+            }
     }
 }

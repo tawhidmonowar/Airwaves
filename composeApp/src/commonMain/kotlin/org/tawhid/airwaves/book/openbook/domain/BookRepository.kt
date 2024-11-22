@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookRepository {
     suspend fun searchBooks(query: String): Result<List<Book>, DataError.Remote>
+    suspend fun getTrendingBooks(): Result<List<Book>, DataError.Remote>
     suspend fun getBookDescription(bookId: String): Result<String?, DataError>
     fun getSavedBooks(): Flow<List<Book>>
     fun isBookSaved(id: String): Flow<Boolean>
