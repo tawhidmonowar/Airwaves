@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.presentations.settings
+package org.tawhid.airwaves.core.presentation.setting
 
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.clear_data
@@ -25,47 +25,63 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.tawhid.airwaves.presentations.settings.components.ClearDataDialog
-import org.tawhid.airwaves.presentations.settings.components.SettingItem
-import org.tawhid.airwaves.presentations.settings.components.ThemeSelectionDialog
+import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailAction
+import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailState
+import org.tawhid.airwaves.core.presentation.setting.components.ClearDataDialog
+import org.tawhid.airwaves.core.presentation.setting.components.SettingItem
+import org.tawhid.airwaves.core.presentation.setting.components.ThemeSelectionDialog
 
 import org.tawhid.airwaves.utils.Theme
 
+@Composable
+fun SettingScreenRoot(
+    viewModel: SettingViewModel = koinViewModel(),
+    onBackClick: () -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    SettingScreen(
+        state = state,
+        onAction = { action ->
+            when (action) {
+                is SettingAction.OnBackClick -> onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(
-    rootNavController: NavHostController,
-    settingViewModel: SettingViewModel
+private fun SettingScreen(
+    state: SettingState,
+    onAction: (SettingAction) -> Unit
 ) {
-
-    var showClearDataDialog by remember { mutableStateOf(false) }
-    var showThemeDialog by remember { mutableStateOf(false) }
-    val currentTheme by settingViewModel.currentTheme.collectAsState()
-
     when {
-        showThemeDialog -> {
+        state.showThemeDialog -> {
             ThemeSelectionDialog(
-                currentTheme = currentTheme ?: Theme.SYSTEM_DEFAULT.name,
+                currentTheme = state.currentTheme ?: Theme.SYSTEM_DEFAULT.name,
                 onThemeChange = { theme ->
-                    settingViewModel.changeThemeMode(theme.name)
-                    showThemeDialog = false
+                    onAction(SettingAction.ChangeTheme(theme.name))
+                    onAction(SettingAction.HideThemeDialog)
                 },
                 onDismissRequest = {
-                    showThemeDialog = false
+                    onAction(SettingAction.HideThemeDialog)
                 }
             )
         }
 
-        showClearDataDialog -> {
+        state.showClearDataDialog -> {
             ClearDataDialog(
                 onDismissRequest = {
-                    showClearDataDialog = false
+                    onAction(SettingAction.HideClearDataDialog)
                 },
                 onDeleteHistory = {
-                    showClearDataDialog = false
+                    onAction(SettingAction.HideClearDataDialog)
                 }
             )
         }
@@ -79,7 +95,7 @@ fun SettingScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        rootNavController.navigateUp()
+                        onAction(SettingAction.OnBackClick)
                     }) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
@@ -96,7 +112,7 @@ fun SettingScreen(
             item {
                 SettingItem(
                     onClick = {
-                        showThemeDialog = true
+                        onAction(SettingAction.ShowThemeDialog)
                     },
                     painter = Icons.Filled.Settings,
                     itemName = stringResource(Res.string.theme)
@@ -106,7 +122,7 @@ fun SettingScreen(
             item {
                 SettingItem(
                     onClick = {
-                        showClearDataDialog = true
+                        onAction(SettingAction.ShowClearDataDialog)
                     },
                     painter = Icons.Filled.Delete,
                     itemName = stringResource(Res.string.clear_data)

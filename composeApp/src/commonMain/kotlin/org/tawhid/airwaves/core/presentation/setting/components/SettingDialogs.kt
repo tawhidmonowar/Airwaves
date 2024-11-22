@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.presentations.settings.components
+package org.tawhid.airwaves.core.presentation.setting.components
 
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.apply
