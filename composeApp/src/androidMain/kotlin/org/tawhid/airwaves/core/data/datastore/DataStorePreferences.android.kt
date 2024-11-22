@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.data.datastore
+package org.tawhid.airwaves.core.data.datastore
 
 import android.app.Application
 import androidx.datastore.core.DataStore
