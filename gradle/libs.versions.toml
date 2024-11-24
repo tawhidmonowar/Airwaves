@@ -15,6 +15,7 @@ compose-plugin = "1.7.0"
 junit = "4.13.2"
 kotlin = "2.0.21"
 kotlinx-coroutines = "1.9.0"
+buildkonfig = "0.15.2"
 
 navigationCompose = "2.8.0-alpha10"
 kotlinx-serialization = "1.7.3"
@@ -95,6 +96,7 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 
