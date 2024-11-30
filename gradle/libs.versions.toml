@@ -1,8 +1,8 @@
 [versions]
-agp = "8.5.2"
-android-compileSdk = "34"
+agp = "8.7.2"
+android-compileSdk = "35"
 android-minSdk = "24"
-android-targetSdk = "34"
+android-targetSdk = "35"
 androidx-activityCompose = "1.9.3"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.2.0"
@@ -19,7 +19,7 @@ buildkonfig = "0.15.2"
 
 navigationCompose = "2.8.0-alpha10"
 kotlinx-serialization = "1.7.3"
-media3Exoplayer = "1.4.1"
+media3Exoplayer = "1.5.0"
 size = "0.5.0"
 
 coil3 = "3.0.0-rc02"
@@ -30,7 +30,7 @@ lifecycleViewModel = "2.8.7"
 datastore = "1.1.1"
 vlcj = "4.8.3"
 
-ksp = "2.0.20-1.0.24"
+ksp = "2.0.21-1.0.26"
 sqlite = "2.5.0-alpha11"
 room = "2.7.0-alpha11"
 
