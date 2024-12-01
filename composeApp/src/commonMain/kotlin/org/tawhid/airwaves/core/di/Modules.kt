@@ -30,6 +30,11 @@ import org.tawhid.airwaves.player.PlayerRepository
 import org.tawhid.airwaves.player.PlayerRepositoryImpl
 import org.tawhid.airwaves.player.PlayerViewModel
 import org.tawhid.airwaves.core.utils.AppPreferences
+import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSource
+import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSourceImpl
+import org.tawhid.airwaves.radio.data.repository.RadioRepositoryImpl
+import org.tawhid.airwaves.radio.domain.RadioRepository
+import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeViewModel
 
 expect val platformModule: Module
 
@@ -38,19 +43,20 @@ val sharedModule = module {
 
     singleOf(::RemoteBookDataSourceImpl).bind<RemoteBookDataSource>()
     singleOf(::RemoteAudioBookDataSourceImpl).bind<RemoteAudioBookDataSource>()
+    singleOf(::RemoteRadioDataSourceImpl).bind<RemoteRadioDataSource>()
 
     singleOf(::BookRepositoryImpl).bind<BookRepository>()
     singleOf(::AudioBookRepositoryImpl).bind<AudioBookRepository>()
+    singleOf(::RadioRepositoryImpl).bind<RadioRepository>()
     singleOf(::PlayerRepositoryImpl).bind<PlayerRepository>()
 
     singleOf(::AppPreferences)
 
-    single {
-        get<DatabaseFactory>().create().setDriver(BundledSQLiteDriver()).build()
-    }
+    single { get<DatabaseFactory>().create().setDriver(BundledSQLiteDriver()).build() }
 
     single { get<SaveBookDatabase>().saveBookDao }
 
+    viewModelOf(::RadioHomeViewModel)
     viewModelOf(::BookHomeViewModel)
     viewModelOf(::BookListViewModel)
     viewModelOf(::AudioBookViewModel)
