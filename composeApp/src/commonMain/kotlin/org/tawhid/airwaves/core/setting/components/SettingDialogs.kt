@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting.components
+package org.tawhid.airwaves.core.setting.components
 
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.apply
@@ -17,9 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
-import org.tawhid.airwaves.theme.mediumPadding
-import org.tawhid.airwaves.theme.xLargePadding
-import org.tawhid.airwaves.theme.xSmallPadding
+import org.tawhid.airwaves.core.theme.mediumPadding
+import org.tawhid.airwaves.core.theme.xLargePadding
+import org.tawhid.airwaves.core.theme.xSmallPadding
 import org.tawhid.airwaves.utils.Theme
 
 @Composable

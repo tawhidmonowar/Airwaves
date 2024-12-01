@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting
+package org.tawhid.airwaves.core.setting
 
 sealed interface SettingAction {
     data object OnBackClick : SettingAction

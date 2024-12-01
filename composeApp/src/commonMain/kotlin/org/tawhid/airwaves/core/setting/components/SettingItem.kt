@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting.components
+package org.tawhid.airwaves.core.setting.components
 
 
 import androidx.compose.foundation.clickable
@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import org.tawhid.airwaves.theme.mediumPadding
-import org.tawhid.airwaves.theme.xLargePadding
+import org.tawhid.airwaves.core.theme.mediumPadding
+import org.tawhid.airwaves.core.theme.xLargePadding
 
 
 @Composable

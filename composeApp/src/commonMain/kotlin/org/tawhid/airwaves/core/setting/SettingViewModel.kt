@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting
+package org.tawhid.airwaves.core.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import org.tawhid.airwaves.utils.AppPreferences
+import org.tawhid.airwaves.core.utils.AppPreferences
 
 class SettingViewModel(
     private val appPreferences: AppPreferences,

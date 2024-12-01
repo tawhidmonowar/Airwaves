@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.utils
+package org.tawhid.airwaves.core.utils
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import org.tawhid.airwaves.utils.Theme
 
 class AppPreferences(
     private val dataStore: DataStore<Preferences>

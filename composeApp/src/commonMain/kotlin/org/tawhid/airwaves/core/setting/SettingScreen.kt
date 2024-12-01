@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting
+package org.tawhid.airwaves.core.setting
 
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.clear_data
@@ -19,22 +19,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailAction
-import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailState
-import org.tawhid.airwaves.core.presentation.setting.components.ClearDataDialog
-import org.tawhid.airwaves.core.presentation.setting.components.SettingItem
-import org.tawhid.airwaves.core.presentation.setting.components.ThemeSelectionDialog
-
+import org.tawhid.airwaves.core.setting.components.ClearDataDialog
+import org.tawhid.airwaves.core.setting.components.SettingItem
+import org.tawhid.airwaves.core.setting.components.ThemeSelectionDialog
 import org.tawhid.airwaves.utils.Theme
 
 @Composable

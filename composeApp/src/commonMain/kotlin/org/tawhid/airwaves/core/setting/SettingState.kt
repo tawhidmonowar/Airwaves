@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.presentation.setting
+package org.tawhid.airwaves.core.setting
 
 import org.tawhid.airwaves.utils.Theme
 
