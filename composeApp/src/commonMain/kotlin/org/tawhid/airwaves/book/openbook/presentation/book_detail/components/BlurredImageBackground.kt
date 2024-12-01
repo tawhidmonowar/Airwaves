@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import org.jetbrains.compose.resources.painterResource
 import org.tawhid.airwaves.core.presentation.animation.PulseAnimation
-import org.tawhid.airwaves.theme.DarkBlue
-import org.tawhid.airwaves.theme.DesertWhite
-import org.tawhid.airwaves.theme.SandYellow
+import org.tawhid.airwaves.core.theme.DarkBlue
+import org.tawhid.airwaves.core.theme.DesertWhite
+import org.tawhid.airwaves.core.theme.SandYellow
 
 @Composable
 fun BlurredImageBackground(

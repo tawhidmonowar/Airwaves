@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.openbook.presentation.book_list.components
+package org.tawhid.airwaves.book.openbook.presentation.book_home.components
 
 import airwaves.composeapp.generated.resources.Res
 import airwaves.composeapp.generated.resources.ic_retry
@@ -43,8 +43,8 @@ import coil3.compose.rememberAsyncImagePainter
 import org.jetbrains.compose.resources.painterResource
 import org.tawhid.airwaves.book.openbook.domain.Book
 import org.tawhid.airwaves.core.presentation.animation.PulseAnimation
-import org.tawhid.airwaves.theme.LightBlue
-import org.tawhid.airwaves.theme.SandYellow
+import org.tawhid.airwaves.core.theme.LightBlue
+import org.tawhid.airwaves.core.theme.SandYellow
 import kotlin.math.round
 
 @Composable

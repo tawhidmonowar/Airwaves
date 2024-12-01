@@ -14,7 +14,7 @@ import org.tawhid.airwaves.core.domain.EmptyResult
 import org.tawhid.airwaves.core.domain.Result
 import org.tawhid.airwaves.core.domain.map
 
-class DefaultBookRepository(
+class BookRepositoryImpl(
     private val remoteBookDataSource: RemoteBookDataSource,
     private val saveBookDao: SaveBookDao
 ) : BookRepository {
@@ -28,7 +28,7 @@ class DefaultBookRepository(
 
     override suspend fun getTrendingBooks(): Result<List<Book>, DataError.Remote> {
         return remoteBookDataSource
-            .getTrendingBooks()
+            .fetchTrendingBooks()
             .map { dto ->
                 dto.results.map { it.toBook() }
             }
@@ -38,11 +38,17 @@ class DefaultBookRepository(
         val localResult = saveBookDao.getSavedBook(bookId)
         return if (localResult == null) {
             remoteBookDataSource
-                .getBookDetails(bookId)
+                .fetchBookDescription(bookId)
                 .map { it.description }
         } else {
             Result.Success(localResult.description)
         }
+    }
+
+    override suspend fun getBookSummary(prompt: String): Result<String?, DataError> {
+        return remoteBookDataSource
+            .fetchBookSummary(prompt)
+            .map { it.candidates.first().content.parts.first().text }
     }
 
     override fun getSavedBooks(): Flow<List<Book>> {

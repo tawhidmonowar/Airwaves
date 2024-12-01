@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.tawhid.airwaves.theme.LightBlue
+import org.tawhid.airwaves.core.theme.LightBlue
 
 enum class ChipSize {
     SMALL, REGULAR

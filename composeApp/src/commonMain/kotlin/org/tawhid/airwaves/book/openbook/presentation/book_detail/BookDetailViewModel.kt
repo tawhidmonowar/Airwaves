@@ -15,15 +15,16 @@ import kotlinx.coroutines.launch
 import org.tawhid.airwaves.app.navigation.Route
 import org.tawhid.airwaves.book.openbook.domain.BookRepository
 import org.tawhid.airwaves.core.domain.onSuccess
+import org.tawhid.airwaves.core.gemini.ApiPrompts.geminiBookSummaryPrompt
 
 class BookDetailViewModel(
     private val bookRepository: BookRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val bookId = savedStateHandle.toRoute<Route.BookDetail>().id
-
     private val _state = MutableStateFlow(BookDetailState())
+
     val state = _state
         .onStart {
             fetchBookDescription()
@@ -57,6 +58,10 @@ class BookDetailViewModel(
                 }
             }
 
+            is BookDetailAction.OnSummaryClick -> {
+                getBookSummary()
+            }
+
             else -> Unit
         }
     }
@@ -87,6 +92,20 @@ class BookDetailViewModel(
                         )
                     }
                 }
+        }
+    }
+
+    private fun getBookSummary() {
+        viewModelScope.launch {
+            _state.value.book?.let { book ->
+                bookRepository.getBookSummary(prompt = geminiBookSummaryPrompt(book)).onSuccess { summary ->
+                    _state.update {
+                        it.copy(
+                            summary = summary
+                        )
+                    }
+                }
+            }
         }
     }
 }

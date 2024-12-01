@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +32,7 @@ import org.tawhid.airwaves.book.openbook.presentation.book_detail.components.Boo
 import org.tawhid.airwaves.book.openbook.presentation.book_detail.components.ChipSize
 import org.tawhid.airwaves.book.openbook.presentation.book_detail.components.TitledContent
 
-import org.tawhid.airwaves.theme.SandYellow
+import org.tawhid.airwaves.core.theme.SandYellow
 import kotlin.math.round
 
 @Composable
@@ -43,7 +44,7 @@ fun BookDetailScreenRoot(
     BookDetailScreen(
         state = state,
         onAction = { action ->
-            when(action) {
+            when (action) {
                 is BookDetailAction.OnBackClick -> onBackClick()
                 else -> Unit
             }
@@ -69,7 +70,7 @@ private fun BookDetailScreen(
         },
         modifier = Modifier.fillMaxSize()
     ) {
-        if(state.book != null) {
+        if (state.book != null) {
             Column(
                 modifier = Modifier
                     .widthIn(max = 700.dp)
@@ -122,7 +123,8 @@ private fun BookDetailScreen(
                         }
                     }
                 }
-                if(state.book.languages.isNotEmpty()) {
+
+                if (state.book.languages.isNotEmpty()) {
                     TitledContent(
                         title = "Languages",
                         modifier = Modifier
@@ -157,24 +159,46 @@ private fun BookDetailScreen(
                             bottom = 8.dp
                         )
                 )
-                if(state.isLoading) {
+                if (state.isLoading) {
                     CircularProgressIndicator()
                 } else {
                     Text(
-                        text = if(state.book.description.isNullOrBlank()) {
+                        text = if (state.book.description.isNullOrBlank()) {
                             "Description Unavailable"
                         } else {
                             state.book.description
                         },
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Justify,
-                        color = if(state.book.description.isNullOrBlank()) {
+                        color = if (state.book.description.isNullOrBlank()) {
                             Color.Black.copy(alpha = 0.4f)
                         } else Color.Black,
                         modifier = Modifier
                             .padding(vertical = 8.dp)
                     )
                 }
+
+                Button(onClick = {
+                    onAction(BookDetailAction.OnSummaryClick)
+                }) {
+                    Text(text = "Get Book Summary")
+                }
+
+                Text(
+                    text = if (state.summary.isNullOrBlank()) {
+                        "Summary Unavailable"
+                    } else {
+                        state.summary
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Justify,
+                    color = if (state.summary.isNullOrBlank()) {
+                        Color.Black.copy(alpha = 0.4f)
+                    } else Color.Black,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                )
+
             }
         }
     }

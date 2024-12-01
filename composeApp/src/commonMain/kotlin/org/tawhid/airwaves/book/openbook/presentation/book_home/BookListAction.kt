@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.openbook.presentation.book_list
+package org.tawhid.airwaves.book.openbook.presentation.book_home
 
 import org.tawhid.airwaves.book.openbook.domain.Book
 

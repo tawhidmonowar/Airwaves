@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.openbook.presentation.book_list
+package org.tawhid.airwaves.book.openbook.presentation.book_home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +20,7 @@ import org.tawhid.airwaves.book.openbook.domain.BookRepository
 
 import org.tawhid.airwaves.core.domain.onError
 import org.tawhid.airwaves.core.domain.onSuccess
-import org.tawhid.airwaves.core.presentation.toUiText
+import org.tawhid.airwaves.core.presentation.utils.toUiText
 
 class BookListViewModel(
     private val bookRepository: BookRepository
@@ -30,12 +30,11 @@ class BookListViewModel(
     private var searchJob: Job? = null
     private var observeSaveJob: Job? = null
 
-
     private val _state = MutableStateFlow(BookListState())
     val state = _state
         .onStart {
             if (cachedBooks.isEmpty()) {
-                //observeSearchQuery()
+                observeSearchQuery()
                 getTrendingBooks()
             }
             observeSavedBooks()
@@ -98,7 +97,7 @@ class BookListViewModel(
                         }
                     }
 
-                    query.length >= 2 -> {
+                    query.length >= 3 -> {
                         searchJob?.cancel()
                         searchJob = searchBooks(query)
                     }

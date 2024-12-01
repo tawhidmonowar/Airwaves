@@ -4,12 +4,11 @@ import org.tawhid.airwaves.book.openbook.data.database.BookEntity
 import org.tawhid.airwaves.book.openbook.data.dto.SearchedBookDto
 import org.tawhid.airwaves.book.openbook.domain.Book
 
-
 fun SearchedBookDto.toBook(): Book {
-    return Book (
+    return Book(
         id = id.substringAfterLast("/"),
         title = title,
-        imgUrl = if(coverKey != null) {
+        imgUrl = if (coverKey != null) {
             "https://covers.openlibrary.org/b/olid/${coverKey}-L.jpg"
         } else {
             "https://covers.openlibrary.org/b/id/${coverAlternativeKey}-L.jpg"

@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.openbook.presentation.book_list.components
+package org.tawhid.airwaves.book.openbook.presentation.book_home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +31,7 @@ fun BookList(
             items = books,
             key = { it.id }
         ) { book ->
-/*            BookListItem(
+            BookListItem(
                 book = book,
                 modifier = Modifier
                     .widthIn(max = 700.dp)
@@ -40,7 +40,7 @@ fun BookList(
                 onClick = {
                     onBookClick(book)
                 }
-            )*/
+            )
         }
     }
 }

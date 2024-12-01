@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.openbook.presentation.book_list.components
+package org.tawhid.airwaves.book.openbook.presentation.book_home.components
 
 
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -6,9 +6,7 @@ import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -22,8 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.launch
 import org.tawhid.airwaves.book.openbook.domain.Book
-import org.tawhid.airwaves.theme.xSmallPadding
-import org.tawhid.airwaves.theme.xxSmallPadding
+import org.tawhid.airwaves.core.theme.xSmallPadding
 
 @Composable
 fun SavedBookList(
