@@ -8,4 +8,5 @@ interface AudioBookRepository {
     suspend fun getScienceFictionBooks(): Result<List<AudioBook>, DataError.Remote>
     suspend fun getActionAdventureBooks(): Result<List<AudioBook>, DataError.Remote>
     suspend fun getEducationalBooks(): Result<List<AudioBook>, DataError.Remote>
+    suspend fun getAudioBookTracks(audioBookId: String): Result<List<AudioBookTracks>, DataError.Remote>
 }

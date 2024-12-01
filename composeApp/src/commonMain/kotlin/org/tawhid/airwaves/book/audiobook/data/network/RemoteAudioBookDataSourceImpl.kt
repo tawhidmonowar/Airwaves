@@ -3,6 +3,7 @@ package org.tawhid.airwaves.book.audiobook.data.network
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import org.tawhid.airwaves.book.audiobook.data.dto.AudioBookTrackResponseDto
 import org.tawhid.airwaves.book.audiobook.data.dto.SearchResponseDto
 import org.tawhid.airwaves.core.data.network.safeCall
 import org.tawhid.airwaves.core.domain.DataError
@@ -27,7 +28,7 @@ class RemoteAudioBookDataSourceImpl(
         }
     }
 
-    override suspend fun getScienceFictionBooks(
+    override suspend fun fetchScienceFictionBooks(
         resultLimit: Int?
     ): Result<SearchResponseDto, DataError.Remote> {
         return safeCall {
@@ -41,7 +42,7 @@ class RemoteAudioBookDataSourceImpl(
         }
     }
 
-    override suspend fun getActionAdventureBooks(
+    override suspend fun fetchActionAdventureBooks(
         resultLimit: Int?
     ): Result<SearchResponseDto, DataError.Remote> {
         return safeCall {
@@ -55,7 +56,7 @@ class RemoteAudioBookDataSourceImpl(
         }
     }
 
-    override suspend fun getEducationalBooks(
+    override suspend fun fetchEducationalBooks(
         resultLimit: Int?
     ): Result<SearchResponseDto, DataError.Remote> {
         return safeCall {
@@ -64,6 +65,19 @@ class RemoteAudioBookDataSourceImpl(
             ) {
                 parameter("genre", "education")
                 parameter("limit", resultLimit)
+                parameter("format", "json")
+            }
+        }
+    }
+
+    override suspend fun fetchAudioBookTracks(
+        audioBookId: String
+    ): Result<AudioBookTrackResponseDto, DataError.Remote> {
+        return safeCall {
+            httpClient.get(
+                urlString = "${LIBRI_VOX_BASE_URL}/audiotracks"
+            ) {
+                parameter("project_id", audioBookId)
                 parameter("format", "json")
             }
         }

@@ -9,9 +9,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.tawhid.airwaves.app.navigation.Route
+import org.tawhid.airwaves.book.audiobook.domain.AudioBookRepository
+import org.tawhid.airwaves.core.domain.onError
+import org.tawhid.airwaves.core.domain.onSuccess
+import org.tawhid.airwaves.core.presentation.utils.toUiText
 
 class AudioBookDetailViewModel(
+    private val audioBookRepository: AudioBookRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -19,7 +25,7 @@ class AudioBookDetailViewModel(
     private val _state = MutableStateFlow(AudioBookDetailState())
     val state = _state
         .onStart {
-
+            getAudioBookTracks()
         }
         .stateIn(
             viewModelScope,
@@ -36,7 +42,29 @@ class AudioBookDetailViewModel(
                     )
                 }
             }
-            else -> Unit
+        }
+    }
+
+    private fun getAudioBookTracks() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isLoadingAudioBookTracks = true
+            )
+        }
+        audioBookRepository.getAudioBookTracks(bookId).onSuccess { audioBookTracks ->
+            _state.update {
+                it.copy(
+                    isLoadingAudioBookTracks = false,
+                    audioBookTracks = audioBookTracks
+                )
+            }
+        }.onError { error ->
+            _state.update {
+                it.copy(
+                    isLoadingAudioBookTracks = false,
+                    errorAudioBookTracks = error.toUiText()
+                )
+            }
         }
     }
 }

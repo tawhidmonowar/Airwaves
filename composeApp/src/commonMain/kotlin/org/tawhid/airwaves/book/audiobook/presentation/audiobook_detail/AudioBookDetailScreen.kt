@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.tawhid.airwaves.book.audiobook.presentation.audiobook_detail.components.AudioBookTrackItem
 import org.tawhid.airwaves.book.openbook.presentation.book_detail.components.BlurredImageBackground
 
 @Composable
@@ -88,23 +90,19 @@ private fun AudioBookDetailScreen(
                             bottom = 8.dp
                         )
                 )
-                if (state.isLoading) {
-                    CircularProgressIndicator()
-                } else {
-                    Text(
-                        text = if (state.audioBook.description.isNullOrBlank()) {
-                            "Description Unavailable"
-                        } else {
-                            state.audioBook.description
-                        },
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Justify,
-                        color = if (state.audioBook.description.isNullOrBlank()) {
-                            Color.Black.copy(alpha = 0.4f)
-                        } else Color.Black,
-                        modifier = Modifier
-                            .padding(vertical = 8.dp)
-                    )
+
+            }
+        }
+        if (state.audioBookTracks != null) {
+            if (state.isLoadingAudioBookTracks) {
+                CircularProgressIndicator()
+            } else {
+                LazyColumn() {
+                    items(state.audioBookTracks.size) { index ->
+                        AudioBookTrackItem(
+                            audioBookTracks = state.audioBookTracks[index]
+                        )
+                    }
                 }
             }
         }
