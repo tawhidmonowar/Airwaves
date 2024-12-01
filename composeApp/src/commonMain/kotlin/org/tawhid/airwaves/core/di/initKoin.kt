@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.di
+package org.tawhid.airwaves.core.di
 
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
