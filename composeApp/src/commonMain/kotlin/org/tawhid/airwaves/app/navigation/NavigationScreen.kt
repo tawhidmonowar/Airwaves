@@ -1,53 +1,32 @@
 package org.tawhid.airwaves.app.navigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
 import org.tawhid.airwaves.app.navigation.components.BottomNavigationBar
 import org.tawhid.airwaves.app.navigation.components.NavigationSideBar
 import org.tawhid.airwaves.app.navigation.components.navigationItemsLists
-import org.tawhid.airwaves.book.openbook.presentation.SelectedBookViewModel
-import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailAction
-import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailScreenRoot
-import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailViewModel
-import org.tawhid.airwaves.book.presentation.BookHomeScreenRoot
-import org.tawhid.airwaves.book.presentation.BookHomeViewModel
-import org.tawhid.airwaves.core.presentation.setting.SettingScreenRoot
-import org.tawhid.airwaves.core.presentation.setting.SettingViewModel
-import org.tawhid.airwaves.presentations.home.HomeScreen
-import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
+import org.tawhid.airwaves.core.setting.SettingScreenRoot
+import org.tawhid.airwaves.core.setting.SettingViewModel
 import org.tawhid.airwaves.utils.DeviceType
 import org.tawhid.airwaves.utils.getDeviceType
 
@@ -149,8 +128,6 @@ private fun NavigationScreen(
             }
         }
 
-
-
         AnimatedVisibility(
             visible = isMediumExpandedWWSC && isMainScreenVisible,
             enter = slideInHorizontally(initialOffsetX = { fullWidth -> -fullWidth }) + fadeIn(),
@@ -171,97 +148,4 @@ private fun NavigationScreen(
             )
         }
     }
-}
-
-private fun NavGraphBuilder.navGraph(
-    rootNavController: NavController,
-    innerPadding: PaddingValues
-) {
-    navigation(
-        startDestination = NavigationScreenRoute.Home.route,
-        route = Graph.NAVIGATION_SCREEN_GRAPH
-    ) {
-        composable(route = NavigationScreenRoute.Home.route) {
-            HomeScreen()
-        }
-        composable(route = NavigationScreenRoute.Podcast.route) {
-            PodcastsScreen()
-        }
-        composable(route = NavigationScreenRoute.Book.route) {
-            val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
-            val selectedBookViewModel =
-                it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
-
-            LaunchedEffect(true) {
-                selectedBookViewModel.onSelectBook(null)
-            }
-
-            BookHomeScreenRoot(
-                viewModel = bookHomeViewModel,
-                onBookClick = { book ->
-                    selectedBookViewModel.onSelectBook(book)
-                    rootNavController.navigate(
-                        Route.BookDetail(book.id)
-                    )
-                },
-                onSettingClick = {
-                    rootNavController.navigate(
-                        Route.Setting
-                    )
-                },
-                innerPadding = innerPadding
-            )
-        }
-        composable<Route.BookDetail>(
-            enterTransition = {
-                fadeIn(animationSpec = tween(100)) +
-                        slideInHorizontally { initialOffset ->
-                            initialOffset
-                        }
-            },
-            exitTransition = {
-                fadeOut(animationSpec = tween(100)) +
-                        slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        }
-
-            }
-        ) { it ->
-
-            val selectedBookViewModel =
-                it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
-            val viewModel = koinViewModel<BookDetailViewModel>()
-            val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()
-
-            LaunchedEffect(selectedBook) {
-                selectedBook?.let {
-                    viewModel.onAction(BookDetailAction.OnSelectedBookChange(it))
-                }
-            }
-
-            BookDetailScreenRoot(
-                viewModel = viewModel,
-                onBackClick = {
-                    rootNavController.navigateUp()
-                }
-            )
-        }
-
-        composable(route = NavigationScreenRoute.Radio.route) {
-
-        }
-    }
-}
-
-@Composable
-private inline fun <reified T : ViewModel> NavBackStackEntry.sharedKoinViewModel(
-    navController: NavController
-): T {
-    val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
-    }
-    return koinViewModel(
-        viewModelStoreOwner = parentEntry
-    )
 }

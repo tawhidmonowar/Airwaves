@@ -8,9 +8,6 @@ sealed interface Route {
     data object Book : Route
 
     @Serializable
-    data object BookGraph : Route
-
-    @Serializable
     data object BookList : Route
 
     @Serializable
@@ -18,6 +15,13 @@ sealed interface Route {
 
     @Serializable
     data class BookDetail(val id: String) : Route
+
+    @Serializable
+    data object RadioDetail : Route
+
+    @Serializable
+    data class AudioBookDetail(val id: String) : Route
+
 }
 
 

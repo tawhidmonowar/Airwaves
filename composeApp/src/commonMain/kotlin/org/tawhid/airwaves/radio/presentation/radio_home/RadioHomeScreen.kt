@@ -230,7 +230,7 @@ private fun RadioHomeScreen(
                             RadioVerticalGridItem(
                                 radio = radio,
                                 onClick = {
-
+                                    onAction(RadioHomeAction.OnRadioClick(radio))
                                 }
                             )
                         }
