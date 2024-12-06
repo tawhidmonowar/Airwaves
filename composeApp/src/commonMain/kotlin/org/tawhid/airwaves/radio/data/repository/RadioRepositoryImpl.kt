@@ -12,10 +12,26 @@ class RadioRepositoryImpl(
     private val remoteRadioDataSource: RemoteRadioDataSource
 ) : RadioRepository {
     override suspend fun searchRadios(query: String): Result<List<Radio>, DataError.Remote> {
-        return remoteRadioDataSource
-            .searchRadio(query)
-            .map { responseDtoList ->
-                responseDtoList.map { it.toRadio() }
-            }
+        return remoteRadioDataSource.searchRadio(query).map { responseDtoList ->
+            responseDtoList.map { it.toRadio() }
+        }
+    }
+
+    override suspend fun getTrendingRadios(): Result<List<Radio>, DataError.Remote> {
+        return remoteRadioDataSource.fetchTrendingRadios().map { responseDtoList ->
+            responseDtoList.map { it.toRadio() }
+        }
+    }
+
+    override suspend fun getVerifiedRadios(): Result<List<Radio>, DataError.Remote> {
+        return remoteRadioDataSource.fetchVerifiedRadios().map { responseDtoList ->
+            responseDtoList.map { it.toRadio() }
+        }
+    }
+
+    override suspend fun getLatestRadios(): Result<List<Radio>, DataError.Remote> {
+        return remoteRadioDataSource.fetchLatestRadios().map { responseDtoList ->
+            responseDtoList.map { it.toRadio() }
+        }
     }
 }

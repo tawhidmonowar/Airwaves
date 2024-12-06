@@ -21,9 +21,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import org.tawhid.airwaves.theme.DarkBlue
-import org.tawhid.airwaves.theme.DesertWhite
-import org.tawhid.airwaves.theme.SandYellow
+import org.tawhid.airwaves.core.theme.DarkBlue
+import org.tawhid.airwaves.core.theme.DesertWhite
+import org.tawhid.airwaves.core.theme.SandYellow
 
 @Composable
 fun SearchBar(

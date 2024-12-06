@@ -27,19 +27,21 @@ class RadioHomeViewModel(
 
     private val cachedRadios = emptyList<Radio>()
     private var searchJob: Job? = null
-
     private val _state = MutableStateFlow(RadioHomeState())
-    val state = _state
-        .onStart {
-            if (cachedRadios.isEmpty()) {
-                observeSearchQuery()
-            }
+
+    val state = _state.onStart {
+        if (cachedRadios.isEmpty()) {
+            observeSearchQuery()
         }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = _state.value
-        )
+        getTrendingRadios()
+        getVerifiedRadios()
+        getLatestRadios()
+
+    }.stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000L),
+        initialValue = _state.value
+    )
 
     fun onAction(action: RadioHomeAction) {
         when (action) {
@@ -57,27 +59,25 @@ class RadioHomeViewModel(
 
     @OptIn(FlowPreview::class)
     private fun observeSearchQuery() {
-        state.map { it.searchQuery }
-            .distinctUntilChanged()
-            .debounce(500L)
-            .onEach { query ->
-                when {
-                    query.isBlank() -> {
-                        _state.update {
-                            it.copy(
-                                errorMsgSearch = null,
-                                searchResult = cachedRadios
-                            )
-                        }
-                    }
-
-                    query.length >= 3 -> {
-                        searchJob?.cancel()
-                        searchJob = searchRadios(query)
+        state.map {
+            it.searchQuery
+        }.distinctUntilChanged().debounce(500L).onEach { query ->
+            when {
+                query.isBlank() -> {
+                    _state.update {
+                        it.copy(
+                            searchErrorMsg = null,
+                            searchResult = cachedRadios
+                        )
                     }
                 }
+
+                query.length >= 3 -> {
+                    searchJob?.cancel()
+                    searchJob = searchRadios(query)
+                }
             }
-            .launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     private fun searchRadios(query: String) = viewModelScope.launch {
@@ -86,24 +86,97 @@ class RadioHomeViewModel(
                 isSearchLoading = true
             )
         }
-        radioRepository.searchRadios(query)
-            .onSuccess { searchResult ->
-                _state.update {
-                    it.copy(
-                        isSearchLoading = false,
-                        errorMsgSearch = null,
-                        searchResult = searchResult
-                    )
-                }
+        radioRepository.searchRadios(query).onSuccess { searchResult ->
+            _state.update {
+                it.copy(
+                    isSearchLoading = false,
+                    searchErrorMsg = null,
+                    searchResult = searchResult
+                )
             }
-            .onError { error ->
-                _state.update {
-                    it.copy(
-                        searchResult = emptyList(),
-                        isSearchLoading = false,
-                        errorMsgSearch = error.toUiText()
-                    )
-                }
+        }.onError { error ->
+            _state.update {
+                it.copy(
+                    searchResult = emptyList(),
+                    isSearchLoading = false,
+                    searchErrorMsg = error.toUiText()
+                )
             }
+        }
+    }
+
+    private fun getTrendingRadios() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isTrendingLoading = true
+            )
+        }
+        radioRepository.getTrendingRadios().onSuccess { trendingRadios ->
+            _state.update {
+                it.copy(
+                    isTrendingLoading = false,
+                    verifiedErrorMsg = null,
+                    trendingRadios = trendingRadios
+                )
+            }
+        }.onError { error ->
+            _state.update {
+                it.copy(
+                    isTrendingLoading = false,
+                    verifiedErrorMsg = error.toUiText(),
+                    trendingRadios = emptyList()
+                )
+            }
+        }
+    }
+
+    private fun getVerifiedRadios() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isVerifiedLoading = true
+            )
+        }
+        radioRepository.getTrendingRadios().onSuccess { verifiedRadios ->
+            _state.update {
+                it.copy(
+                    isVerifiedLoading = false,
+                    verifiedErrorMsg = null,
+                    verifiedRadios = verifiedRadios
+                )
+            }
+        }.onError { error ->
+            _state.update {
+                it.copy(
+                    isVerifiedLoading = false,
+                    verifiedErrorMsg = error.toUiText(),
+                    verifiedRadios = emptyList()
+                )
+            }
+        }
+    }
+
+    private fun getLatestRadios() = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                isLatestLoading = true
+            )
+        }
+        radioRepository.getTrendingRadios().onSuccess { latestRadios ->
+            _state.update {
+                it.copy(
+                    isLatestLoading = false,
+                    latestErrorMsg = null,
+                    latestRadios = latestRadios
+                )
+            }
+        }.onError { error ->
+            _state.update {
+                it.copy(
+                    isLatestLoading = false,
+                    latestErrorMsg = error.toUiText(),
+                    latestRadios = emptyList()
+                )
+            }
+        }
     }
 }

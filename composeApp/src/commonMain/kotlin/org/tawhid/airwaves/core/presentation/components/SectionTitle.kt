@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.book.presentation.components
+package org.tawhid.airwaves.core.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

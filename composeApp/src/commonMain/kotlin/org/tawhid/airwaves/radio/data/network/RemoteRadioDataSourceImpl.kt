@@ -30,4 +30,47 @@ class RemoteRadioDataSourceImpl(
             }
         }
     }
+
+    override suspend fun fetchTrendingRadios(resultLimit: Int?): Result<List<RadioSearchResponseDto>, DataError.Remote> {
+        return safeCall {
+            httpClient.get(
+                urlString = "${RADIO_BROWSER_BASE_URL}/stations/search"
+            ) {
+                header("User-Agent", USER_AGENT)
+                parameter("limit", resultLimit)
+                parameter("hidebroken", "true")
+                parameter("order", "clickcount")
+                parameter("reverse", "true")
+            }
+        }
+    }
+
+    override suspend fun fetchVerifiedRadios(resultLimit: Int?): Result<List<RadioSearchResponseDto>, DataError.Remote> {
+        return safeCall {
+            httpClient.get(
+                urlString = "${RADIO_BROWSER_BASE_URL}/stations/search"
+            ) {
+                header("User-Agent", USER_AGENT)
+                parameter("limit", resultLimit)
+                parameter("has_extended_info", "true")
+                parameter("hidebroken", "true")
+                parameter("order", "random")
+                parameter("reverse", "true")
+            }
+        }
+    }
+
+    override suspend fun fetchLatestRadios(resultLimit: Int?): Result<List<RadioSearchResponseDto>, DataError.Remote> {
+        return safeCall {
+            httpClient.get(
+                urlString = "${RADIO_BROWSER_BASE_URL}/stations/search"
+            ) {
+                header("User-Agent", USER_AGENT)
+                parameter("limit", resultLimit)
+                parameter("reverse", "true")
+                parameter("hidebroken", "true")
+                parameter("order", "changetimestamp")
+            }
+        }
+    }
 }

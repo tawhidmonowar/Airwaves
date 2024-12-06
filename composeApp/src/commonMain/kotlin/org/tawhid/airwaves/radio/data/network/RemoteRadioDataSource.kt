@@ -9,4 +9,16 @@ interface RemoteRadioDataSource {
         query: String,
         resultLimit: Int? = 50
     ): Result<List<RadioSearchResponseDto>, DataError.Remote>
+
+    suspend fun fetchTrendingRadios(
+        resultLimit: Int? = 50
+    ): Result<List<RadioSearchResponseDto>, DataError.Remote>
+
+    suspend fun fetchVerifiedRadios(
+        resultLimit: Int? = 50
+    ): Result<List<RadioSearchResponseDto>, DataError.Remote>
+
+    suspend fun fetchLatestRadios(
+        resultLimit: Int? = 100
+    ): Result<List<RadioSearchResponseDto>, DataError.Remote>
 }
