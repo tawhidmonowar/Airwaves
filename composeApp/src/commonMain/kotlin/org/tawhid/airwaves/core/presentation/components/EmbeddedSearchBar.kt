@@ -1,74 +1,64 @@
 package org.tawhid.airwaves.core.presentation.components
 
+import airwaves.composeapp.generated.resources.Res
+import airwaves.composeapp.generated.resources.search
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import org.tawhid.airwaves.theme.DarkBlue
-import org.tawhid.airwaves.theme.DesertWhite
-import org.tawhid.airwaves.theme.SandYellow
+import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.core.theme.DarkBlue
+import org.tawhid.airwaves.core.theme.SandYellow
+import org.tawhid.airwaves.core.theme.Shapes
+import org.tawhid.airwaves.core.theme.xxSmallPadding
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun EmbeddedSearchBar(
-    searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
-    onImeSearch: () -> Unit,
-    onBackClick: () -> Unit,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    onBack: () -> Unit,
+    isActive: Boolean,
     content: @Composable () -> Unit,
+    placeholder: String = stringResource(Res.string.search),
 ) {
     SearchBar(
         inputField = {
             EmbeddedSearchBarInputField(
-                searchQuery = searchQuery,
-                onSearchQueryChange = onSearchQueryChange,
-                onImeSearch = onImeSearch,
-                onBackClick = onBackClick,
-                modifier = Modifier.fillMaxSize()
+                query = query,
+                onQueryChange = onQueryChange,
+                onSearch = onSearch,
+                onBack = onBack,
+                placeholder = placeholder
             )
         },
-        expanded = true,
-        onExpandedChange = {},
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp,
-        windowInsets = SearchBarDefaults.windowInsets,
+        expanded = isActive,
+        onExpandedChange = { expanded ->
+            if (!expanded) onBack()
+        },
         colors = SearchBarDefaults.colors(
-            dividerColor = Color.Transparent
+            dividerColor = Color.Transparent,
+            containerColor = Color.Transparent
         ),
         content = {
             content()
@@ -77,12 +67,12 @@ fun EmbeddedSearchBar(
 }
 
 @Composable
-fun EmbeddedSearchBarInputField(
-    searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
-    onImeSearch: () -> Unit,
-    onBackClick: () -> Unit,
-    modifier: Modifier = Modifier
+private fun EmbeddedSearchBarInputField(
+    query: String,
+    placeholder: String,
+    onQueryChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    onBack: () -> Unit
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
@@ -91,22 +81,24 @@ fun EmbeddedSearchBarInputField(
         )
     ) {
         TextField(
-            modifier = modifier
-                .minimumInteractiveComponentSize(),
-            value = searchQuery,
-            onValueChange = { onSearchQueryChange(it) },
+            modifier = Modifier
+                .padding(horizontal = xxSmallPadding),
+            shape = Shapes.small,
+            value = query,
+            onValueChange = { onQueryChange(it) },
             singleLine = true,
             placeholder = {
-                Text(text = "Search on Open Library...")
+                Text(text = placeholder)
             },
             colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.White
             ),
             leadingIcon = {
                 IconButton(onClick = {
-                    onBackClick()
+                    onBack()
                 }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
@@ -116,7 +108,7 @@ fun EmbeddedSearchBarInputField(
             },
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    onImeSearch()
+                    onSearch()
                 }
             ),
             keyboardOptions = KeyboardOptions(
@@ -125,9 +117,9 @@ fun EmbeddedSearchBarInputField(
             ),
             trailingIcon = {
                 AnimatedVisibility(
-                    visible = searchQuery.isNotBlank()
+                    visible = query.isNotBlank()
                 ) {
-                    IconButton(onClick = { onSearchQueryChange("") }) {
+                    IconButton(onClick = { onQueryChange("") }) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = null
