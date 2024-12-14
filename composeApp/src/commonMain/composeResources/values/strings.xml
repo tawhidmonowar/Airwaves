@@ -33,6 +33,8 @@
     <string name="latest_radios">Latest Radios</string>">
     <string name="no_radios_found">"No Radios Found!"</string>
     <string name="online_radio_stations">Online Radio Stations</string>
+    <string name="radio_cover_background">Radio Cover Background</string>
+    <string name="radio_cover">Radio Cover</string>
 
 
     <string name="audiobooks_not_found">Audiobooks could not be found</string>
