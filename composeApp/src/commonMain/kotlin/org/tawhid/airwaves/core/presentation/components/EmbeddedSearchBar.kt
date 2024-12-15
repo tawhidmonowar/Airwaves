@@ -6,8 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -20,14 +18,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import org.jetbrains.compose.resources.stringResource
-import org.tawhid.airwaves.core.theme.DarkBlue
-import org.tawhid.airwaves.core.theme.SandYellow
 import org.tawhid.airwaves.core.theme.Shapes
 import org.tawhid.airwaves.core.theme.xxSmallPadding
 
@@ -42,6 +46,12 @@ fun EmbeddedSearchBar(
     content: @Composable () -> Unit,
     placeholder: String = stringResource(Res.string.search),
 ) {
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(isActive) {
+        if (isActive) {
+            focusRequester.requestFocus()
+        }
+    }
     SearchBar(
         inputField = {
             EmbeddedSearchBarInputField(
@@ -49,7 +59,8 @@ fun EmbeddedSearchBar(
                 onQueryChange = onQueryChange,
                 onSearch = onSearch,
                 onBack = onBack,
-                placeholder = placeholder
+                placeholder = placeholder,
+                focusRequester = focusRequester
             )
         },
         expanded = isActive,
@@ -72,61 +83,69 @@ private fun EmbeddedSearchBarInputField(
     placeholder: String,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    focusRequester: FocusRequester
 ) {
-    CompositionLocalProvider(
-        LocalTextSelectionColors provides TextSelectionColors(
-            handleColor = DarkBlue,
-            backgroundColor = SandYellow
+    var textFieldValueState by remember {
+        mutableStateOf(
+            TextFieldValue(
+                text = query,
+                selection = TextRange(query.length)
+            )
         )
-    ) {
-        TextField(
-            modifier = Modifier
-                .padding(horizontal = xxSmallPadding),
-            shape = Shapes.small,
-            value = query,
-            onValueChange = { onQueryChange(it) },
-            singleLine = true,
-            placeholder = {
-                Text(text = placeholder)
-            },
-            colors = TextFieldDefaults.colors(
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedContainerColor = Color.White
-            ),
-            leadingIcon = {
-                IconButton(onClick = {
-                    onBack()
-                }) {
+    }
+    TextField(
+        modifier = Modifier
+            .padding(horizontal = xxSmallPadding)
+            .focusRequester(focusRequester),
+        shape = Shapes.small,
+        value = TextFieldValue(
+            text = query,
+            selection = TextRange(query.length)
+        ),
+        onValueChange = {
+            onQueryChange(it.text)
+        },
+        singleLine = true,
+        placeholder = {
+            Text(text = placeholder)
+        },
+        colors = TextFieldDefaults.colors(
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedContainerColor = Color.White,
+        ),
+        leadingIcon = {
+            IconButton(onClick = {
+                onBack()
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = null
+                )
+            }
+        },
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch()
+            }
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
+        ),
+        trailingIcon = {
+            AnimatedVisibility(
+                visible = query.isNotBlank()
+            ) {
+                IconButton(onClick = { onQueryChange("") }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        imageVector = Icons.Default.Close,
                         contentDescription = null
                     )
                 }
-            },
-            keyboardActions = KeyboardActions(
-                onSearch = {
-                    onSearch()
-                }
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Search
-            ),
-            trailingIcon = {
-                AnimatedVisibility(
-                    visible = query.isNotBlank()
-                ) {
-                    IconButton(onClick = { onQueryChange("") }) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = null
-                        )
-                    }
-                }
             }
-        )
-    }
+        }
+    )
 }
