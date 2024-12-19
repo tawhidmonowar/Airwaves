@@ -52,17 +52,12 @@ fun NavGraphBuilder.navGraph(
             PodcastsScreen()
         }
         composable(route = NavigationScreenRoute.Book.route) {
-
             val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
             val selectedBookViewModel =
                 it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
             val selectedAudioBookViewModel =
                 it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
-
-            LaunchedEffect(true) {
-                selectedBookViewModel.onSelectBook(null)
-            }
-
+            LaunchedEffect(true) { selectedBookViewModel.onSelectBook(null) }
             BookHomeScreenRoot(
                 viewModel = bookHomeViewModel,
                 onBookClick = { book ->
@@ -79,7 +74,7 @@ fun NavGraphBuilder.navGraph(
                 },
                 onSettingClick = {
                     rootNavController.navigate(
-                        Route.Setting
+                        NavigationScreenRoute.Setting.route
                     )
                 },
                 innerPadding = innerPadding
@@ -87,12 +82,10 @@ fun NavGraphBuilder.navGraph(
         }
 
         composable<Route.AudioBookDetail> { it ->
-
             val selectedAudioBookViewModel =
                 it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
             val viewModel = koinViewModel<AudioBookDetailViewModel>()
             val selectedAudioBook by selectedAudioBookViewModel.selectedBook.collectAsStateWithLifecycle()
-
             LaunchedEffect(selectedAudioBook) {
                 selectedAudioBook?.let {
                     viewModel.onAction(AudioBookDetailAction.OnSelectedBookChange(it))
@@ -108,17 +101,14 @@ fun NavGraphBuilder.navGraph(
 
         composable<Route.BookDetail>(
             enterTransition = {
-                fadeIn(animationSpec = tween(100)) +
-                        slideInHorizontally { initialOffset ->
-                            initialOffset
-                        }
+                fadeIn(animationSpec = tween(100)) + slideInHorizontally { initialOffset ->
+                    initialOffset
+                }
             },
             exitTransition = {
-                fadeOut(animationSpec = tween(100)) +
-                        slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        }
-
+                fadeOut(animationSpec = tween(100)) + slideOutHorizontally { initialOffset ->
+                    initialOffset
+                }
             }
         ) { it ->
 

@@ -22,13 +22,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
-import org.tawhid.airwaves.app.navigation.components.BottomNavigationBar
-import org.tawhid.airwaves.app.navigation.components.NavigationSideBar
+import org.tawhid.airwaves.app.navigation.components.CompactNavigationBar
+import org.tawhid.airwaves.app.navigation.components.ExpandedNavigationBar
+import org.tawhid.airwaves.app.navigation.components.MediumNavigationBar
 import org.tawhid.airwaves.app.navigation.components.navigationItemsLists
+import org.tawhid.airwaves.app.navigation.components.settingNavigationItems
 import org.tawhid.airwaves.core.setting.SettingScreenRoot
 import org.tawhid.airwaves.core.setting.SettingViewModel
-import org.tawhid.airwaves.utils.DeviceType
-import org.tawhid.airwaves.utils.getDeviceType
+import org.tawhid.airwaves.core.theme.expandedNavigationBarWidth
 
 @Composable
 fun NavigationScreenRoot(
@@ -43,47 +44,46 @@ private fun NavigationScreen(
     settingViewModel: SettingViewModel
 ) {
     val windowSizeClass = calculateWindowSizeClass()
-    val isMediumExpandedWWSC by remember(windowSizeClass) {
-        derivedStateOf {
-            windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact
-        }
+    val isCompactScreen by remember(windowSizeClass) { derivedStateOf { windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact } }
+    val isMediumScreen by remember(windowSizeClass) { derivedStateOf { windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium } }
+    val isExpandedScreen by remember(windowSizeClass) { derivedStateOf { windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded } }
+
+    val navigationItems = if (isExpandedScreen || isMediumScreen) {
+        navigationItemsLists + settingNavigationItems
+    } else {
+        navigationItemsLists
     }
+
     val rootNavController = rememberNavController()
     val navBackStackEntry by rootNavController.currentBackStackEntryAsState()
+
     val currentRoute by remember(navBackStackEntry) {
         derivedStateOf {
             navBackStackEntry?.destination?.route
         }
     }
-    val navigationItem by remember {
+
+    val isNavigationBarsVisible by remember(currentRoute) {
         derivedStateOf {
-            navigationItemsLists.find { it.route == currentRoute }
-        }
-    }
-    val isMainScreenVisible by remember(isMediumExpandedWWSC) {
-        derivedStateOf {
-            navigationItem != null
-        }
-    }
-    val isBottomBarVisible by remember(isMediumExpandedWWSC) {
-        derivedStateOf {
-            if (!isMediumExpandedWWSC) {
-                navigationItem != null
-            } else {
-                false
-            }
+            currentRoute in listOf(
+                NavigationScreenRoute.Home.route,
+                NavigationScreenRoute.Podcast.route,
+                NavigationScreenRoute.Book.route,
+                NavigationScreenRoute.Setting.route,
+                NavigationScreenRoute.Radio.route
+            )
         }
     }
 
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
-                visible = isBottomBarVisible,
+                visible = isNavigationBarsVisible && isCompactScreen,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { fullHeight -> fullHeight }),
                 exit = fadeOut() + slideOutVertically(targetOffsetY = { fullHeight -> fullHeight })
             ) {
-                BottomNavigationBar(
-                    items = navigationItemsLists,
+                CompactNavigationBar(
+                    items = navigationItems,
                     currentRoute = currentRoute,
                     onItemClick = { currentNavigationItem ->
                         rootNavController.navigate(currentNavigationItem.route) {
@@ -99,18 +99,12 @@ private fun NavigationScreen(
         }
     ) { innerPadding ->
 
-        val isDesktop = remember {
-            getDeviceType() == DeviceType.Desktop
-        }
-
-        val contentPadding = if (isDesktop) {
+        val contentPadding = if (isExpandedScreen) {
+            PaddingValues(start = expandedNavigationBarWidth)
+        } else if (isMediumScreen) {
             PaddingValues(start = 80.dp)
         } else {
-            if (isMediumExpandedWWSC && isMainScreenVisible) {
-                PaddingValues(start = 80.dp)
-            } else {
-                innerPadding
-            }
+            innerPadding
         }
 
         NavHost(
@@ -118,7 +112,7 @@ private fun NavigationScreen(
             startDestination = Graph.NAVIGATION_SCREEN_GRAPH,
         ) {
             navGraph(rootNavController = rootNavController, innerPadding = contentPadding)
-            composable<Route.Setting> {
+            composable(route = NavigationScreenRoute.Setting.route) {
                 SettingScreenRoot(
                     viewModel = settingViewModel,
                     onBackClick = {
@@ -129,12 +123,32 @@ private fun NavigationScreen(
         }
 
         AnimatedVisibility(
-            visible = isMediumExpandedWWSC && isMainScreenVisible,
+            visible = isNavigationBarsVisible && isMediumScreen,
             enter = slideInHorizontally(initialOffsetX = { fullWidth -> -fullWidth }) + fadeIn(),
             exit = slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) + fadeOut()
         ) {
-            NavigationSideBar(
-                items = navigationItemsLists,
+            MediumNavigationBar(
+                items = navigationItems,
+                currentRoute = currentRoute,
+                onItemClick = { currentNavigationItem ->
+                    rootNavController.navigate(currentNavigationItem.route) {
+                        popUpTo(NavigationScreenRoute.Home.route) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+
+        AnimatedVisibility(
+            visible = isNavigationBarsVisible && isExpandedScreen,
+            enter = slideInHorizontally(initialOffsetX = { fullWidth -> -fullWidth }) + fadeIn(),
+            exit = slideOutHorizontally(targetOffsetX = { fullWidth -> -fullWidth }) + fadeOut()
+        ) {
+            ExpandedNavigationBar(
+                items = navigationItems,
                 currentRoute = currentRoute,
                 onItemClick = { currentNavigationItem ->
                     rootNavController.navigate(currentNavigationItem.route) {
