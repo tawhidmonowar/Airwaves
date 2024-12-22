@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
@@ -28,6 +29,7 @@ import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailScre
 import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailViewModel
 import org.tawhid.airwaves.book.presentation.BookHomeScreenRoot
 import org.tawhid.airwaves.book.presentation.BookHomeViewModel
+import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
 import org.tawhid.airwaves.presentations.home.HomeScreen
 import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
 import org.tawhid.airwaves.radio.presentation.SelectedRadioViewModel
@@ -133,8 +135,7 @@ fun NavGraphBuilder.navGraph(
 
         composable(route = NavigationScreenRoute.Radio.route) {
             val radioHomeViewModel = koinViewModel<RadioHomeViewModel>()
-            val selectedRadioViewModel =
-                it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
+            val selectedRadioViewModel = it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
             LaunchedEffect(true) {
                 selectedRadioViewModel.onSelectedRadio(null)
             }
@@ -146,15 +147,38 @@ fun NavGraphBuilder.navGraph(
                         Route.RadioDetail
                     )
                 },
+                onSettingClick = {
+                    rootNavController.navigate(
+                        NavigationScreenRoute.Setting.route
+                    )
+                },
                 innerPadding = innerPadding
             )
         }
 
         composable<Route.RadioDetail> { it ->
-            val selectedRadioViewModel =
-                it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
+            val selectedRadioViewModel = it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
             val viewModel = koinViewModel<RadioDetailViewModel>()
-            val selectedRadio by selectedRadioViewModel.selectedRadio.collectAsStateWithLifecycle()
+            val selectedRadio by selectedRadioViewModel.selectedRadio.collectAsState()
+
+            LaunchedEffect(selectedRadio) {
+                selectedRadio?.let {
+                    viewModel.onAction(RadioDetailAction.OnSelectedRadioChange(it))
+                }
+            }
+            RadioDetailScreenRoot(
+                viewModel = viewModel,
+                onBackClick = {
+                    rootNavController.navigateUp()
+                }
+            )
+        }
+
+        composable<Route.PlayerToRadioDetail> {
+            val viewModel = koinViewModel<RadioDetailViewModel>()
+            val playerViewModel = koinViewModel<PlayerViewModel> ()
+            val playerState by playerViewModel.state.collectAsState()
+            val selectedRadio = playerState.selectedRadio
 
             LaunchedEffect(selectedRadio) {
                 selectedRadio?.let {

@@ -25,10 +25,10 @@ import org.tawhid.airwaves.book.openbook.presentation.book_home.BookListViewMode
 import org.tawhid.airwaves.book.presentation.BookHomeViewModel
 import org.tawhid.airwaves.core.data.database.DatabaseFactory
 import org.tawhid.airwaves.core.data.network.HttpClientFactory
+import org.tawhid.airwaves.core.player.domain.PlayerRepository
+import org.tawhid.airwaves.core.player.data.PlayerRepositoryImpl
+import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
 import org.tawhid.airwaves.core.setting.SettingViewModel
-import org.tawhid.airwaves.player.PlayerRepository
-import org.tawhid.airwaves.player.PlayerRepositoryImpl
-import org.tawhid.airwaves.player.PlayerViewModel
 import org.tawhid.airwaves.core.utils.AppPreferences
 import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSource
 import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSourceImpl
@@ -51,6 +51,7 @@ val sharedModule = module {
     singleOf(::AudioBookRepositoryImpl).bind<AudioBookRepository>()
     singleOf(::RadioRepositoryImpl).bind<RadioRepository>()
     singleOf(::PlayerRepositoryImpl).bind<PlayerRepository>()
+    single { PlayerViewModel(get()) }
 
     singleOf(::AppPreferences)
 
@@ -68,6 +69,5 @@ val sharedModule = module {
     viewModelOf(::SelectedAudioBookViewModel)
     viewModelOf(::SelectedBookViewModel)
     viewModelOf(::SelectedRadioViewModel)
-    viewModelOf(::PlayerViewModel)
     viewModelOf(::SettingViewModel)
 }

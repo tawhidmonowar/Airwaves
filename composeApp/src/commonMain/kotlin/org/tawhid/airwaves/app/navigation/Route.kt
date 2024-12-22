@@ -10,6 +10,8 @@ sealed interface Route {
     @Serializable
     data object RadioDetail : Route
     @Serializable
+    data object PlayerToRadioDetail : Route
+    @Serializable
     data class AudioBookDetail(val id: String) : Route
 }
 
