@@ -9,8 +9,11 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -31,10 +34,11 @@ import org.tawhid.airwaves.app.navigation.components.ExpandedNavigationBar
 import org.tawhid.airwaves.app.navigation.components.MediumNavigationBar
 import org.tawhid.airwaves.app.navigation.components.navigationItemsLists
 import org.tawhid.airwaves.app.navigation.components.settingNavigationItems
-import org.tawhid.airwaves.core.player.presentation.PlayingOverlay
+import org.tawhid.airwaves.core.player.presentation.components.PlayingOverlay
 import org.tawhid.airwaves.core.setting.SettingScreenRoot
 import org.tawhid.airwaves.core.setting.SettingViewModel
 import org.tawhid.airwaves.core.theme.expandedNavigationBarWidth
+import org.tawhid.airwaves.core.theme.extraThin
 import org.tawhid.airwaves.core.theme.mediumNavigationBarWidth
 
 @Composable
@@ -117,7 +121,6 @@ private fun NavigationScreen(
         } else {
             innerPadding
         }
-
         Box(modifier = Modifier.fillMaxSize()) {
             NavHost(
                 navController = rootNavController,
@@ -174,8 +177,6 @@ private fun NavigationScreen(
                     }
                 )
             }
-
-
             AnimatedVisibility(
                 visible = isNavigationBarsVisible,
                 enter = fadeIn() + slideInVertically(initialOffsetY = { fullHeight -> fullHeight }),

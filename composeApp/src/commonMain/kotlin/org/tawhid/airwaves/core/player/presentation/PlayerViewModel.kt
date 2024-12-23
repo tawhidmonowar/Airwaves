@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.tawhid.airwaves.core.player.domain.PlayerRepository
-import org.tawhid.airwaves.radio.domain.Radio
 
 class PlayerViewModel(
     private val repository: PlayerRepository
@@ -21,23 +20,23 @@ class PlayerViewModel(
                         isPlaying = true
                     )
                 }
-                repository.play(action.url)
+                repository.play(action.audioUrl)
             }
-
+            is PlayerAction.OnSelectPlayer -> {
+                _state.update {
+                    it.copy(
+                        selectedPlayer = action.player
+                    )
+                }
+            }
             is PlayerAction.OnPauseClick -> {
-
+                repository.pauseResume()
             }
             is PlayerAction.OnCollapseClick -> {
                 _state.update {
                     it.copy(isCollapsed = !it.isCollapsed)
                 }
             }
-        }
-    }
-
-    fun selectRadio(radio: Radio) {
-        _state.update {
-            it.copy(selectedRadio = radio)
         }
     }
 }

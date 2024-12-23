@@ -1,4 +1,4 @@
-package org.tawhid.airwaves.core.player.data
+package org.tawhid.airwaves.core.player.data.repository
 
 import org.tawhid.airwaves.core.player.PlayerController
 import org.tawhid.airwaves.core.player.domain.PlayerRepository
@@ -10,7 +10,7 @@ class PlayerRepositoryImpl(
         playerController.play(audioUrl)
     }
 
-    override fun pause() {
-        playerController.pause()
+    override fun pauseResume() {
+        playerController.pauseResume()
     }
 }

@@ -5,12 +5,13 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import org.tawhid.airwaves.core.player.domain.PlayerRepository
 
-actual class PlayerController(context: Context) {
+actual class PlayerController(context: Context) : PlayerRepository {
 
     private val player = ExoPlayer.Builder(context).build()
 
-    actual fun play(audioUrl: String) {
+    override fun play(audioUrl: String) {
         val mediaItem = MediaItem.fromUri(audioUrl)
 
         player.addListener(object : Player.Listener {
@@ -32,9 +33,11 @@ actual class PlayerController(context: Context) {
         player.play()
     }
 
-    actual fun pause() {
+     override fun pauseResume() {
         if (player.isPlaying) {
             player.pause()
+        } else {
+            player.play()
         }
     }
 }

@@ -29,6 +29,7 @@ import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailScre
 import org.tawhid.airwaves.book.openbook.presentation.book_detail.BookDetailViewModel
 import org.tawhid.airwaves.book.presentation.BookHomeScreenRoot
 import org.tawhid.airwaves.book.presentation.BookHomeViewModel
+import org.tawhid.airwaves.core.player.data.mappers.toRadio
 import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
 import org.tawhid.airwaves.presentations.home.HomeScreen
 import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
@@ -178,7 +179,7 @@ fun NavGraphBuilder.navGraph(
             val viewModel = koinViewModel<RadioDetailViewModel>()
             val playerViewModel = koinViewModel<PlayerViewModel> ()
             val playerState by playerViewModel.state.collectAsState()
-            val selectedRadio = playerState.selectedRadio
+            val selectedRadio = playerState.selectedPlayer?.toRadio()
 
             LaunchedEffect(selectedRadio) {
                 selectedRadio?.let {

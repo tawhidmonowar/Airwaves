@@ -1,6 +1,5 @@
 package org.tawhid.airwaves.core.player
 
-expect class PlayerController {
-    fun play(audioUrl: String)
-    fun pause()
-}
+import org.tawhid.airwaves.core.player.domain.PlayerRepository
+
+expect class PlayerController : PlayerRepository

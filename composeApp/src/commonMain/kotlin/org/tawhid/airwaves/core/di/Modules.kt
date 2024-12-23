@@ -26,7 +26,7 @@ import org.tawhid.airwaves.book.presentation.BookHomeViewModel
 import org.tawhid.airwaves.core.data.database.DatabaseFactory
 import org.tawhid.airwaves.core.data.network.HttpClientFactory
 import org.tawhid.airwaves.core.player.domain.PlayerRepository
-import org.tawhid.airwaves.core.player.data.PlayerRepositoryImpl
+import org.tawhid.airwaves.core.player.data.repository.PlayerRepositoryImpl
 import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
 import org.tawhid.airwaves.core.setting.SettingViewModel
 import org.tawhid.airwaves.core.utils.AppPreferences

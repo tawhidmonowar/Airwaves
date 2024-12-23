@@ -1,12 +1,13 @@
 package org.tawhid.airwaves.core.player
 
+import org.tawhid.airwaves.core.player.domain.PlayerRepository
 import uk.co.caprica.vlcj.media.Media
 import uk.co.caprica.vlcj.media.MediaEventAdapter
 import uk.co.caprica.vlcj.media.MediaParsedStatus
 import uk.co.caprica.vlcj.media.Meta
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent
 
-actual class PlayerController {
+actual class PlayerController : PlayerRepository {
 
     private val player = AudioPlayerComponent()
     private val options = arrayOf(
@@ -14,7 +15,7 @@ actual class PlayerController {
         ":https-user-agent=Mozilla/5.0"
     )
 
-    actual fun play(audioUrl: String) {
+    override fun play(audioUrl: String) {
         player.mediaPlayer().media().startPaused(audioUrl ,*options)
         player.mediaPlayer().media().parsing().parse();
         player.mediaPlayer().controls().play()
@@ -42,9 +43,11 @@ actual class PlayerController {
 
     }
 
-    actual fun pause() {
+    override fun pauseResume() {
         if (player.mediaPlayer().status().isPlaying) {
             player.mediaPlayer().controls().pause()
+        } else {
+            player.mediaPlayer().controls().play()
         }
     }
 }
