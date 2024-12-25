@@ -59,7 +59,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.navigation.compose)
-            implementation(libs.screen.size)
+            implementation(libs.window.size)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.lifecycle.viewmodel)
 
