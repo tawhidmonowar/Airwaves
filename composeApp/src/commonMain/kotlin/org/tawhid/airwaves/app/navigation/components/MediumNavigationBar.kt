@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.app.navigation.Route
 import org.tawhid.airwaves.core.theme.extraThin
 import org.tawhid.airwaves.core.theme.small
 
@@ -21,7 +22,7 @@ import org.tawhid.airwaves.core.theme.small
 fun MediumNavigationBar(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
-    currentRoute: String?,
+    currentRoute: Route?,
     onItemClick: (NavigationItem) -> Unit
 ) {
     Row(modifier = modifier) {
@@ -30,7 +31,12 @@ fun MediumNavigationBar(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
         ) {
             items.forEach { navigationItem ->
-                val isSelected = navigationItem.route == currentRoute
+                val isSelected =
+                    if (navigationItem.route == Route.RadioGraph && currentRoute == Route.RadioViewMore()) {
+                        true
+                    } else {
+                        navigationItem.route == currentRoute
+                    }
                 val iconPainter = painterResource(
                     if (isSelected) navigationItem.selectedIcon else navigationItem.unSelectedIcon
                 )

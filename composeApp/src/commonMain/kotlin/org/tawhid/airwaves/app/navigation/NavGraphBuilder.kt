@@ -31,137 +31,157 @@ import org.tawhid.airwaves.book.presentation.BookHomeScreenRoot
 import org.tawhid.airwaves.book.presentation.BookHomeViewModel
 import org.tawhid.airwaves.core.player.data.mappers.toRadio
 import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
+import org.tawhid.airwaves.core.setting.SettingScreenRoot
+import org.tawhid.airwaves.core.setting.SettingViewModel
 import org.tawhid.airwaves.presentations.home.HomeScreen
 import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
-import org.tawhid.airwaves.radio.presentation.SelectedRadioViewModel
+import org.tawhid.airwaves.radio.presentation.SharedRadioViewModel
 import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailAction
 import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailScreenRoot
 import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailViewModel
 import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeScreenRoot
 import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeViewModel
+import org.tawhid.airwaves.radio.presentation.radio_home.ViewMoreScreenRoot
 
-fun NavGraphBuilder.navGraph(
+fun NavGraphBuilder.navGraphBuilder(
     rootNavController: NavController,
+    settingViewModel: SettingViewModel,
     innerPadding: PaddingValues
 ) {
-    navigation(
-        startDestination = NavigationScreenRoute.Home.route,
-        route = Graph.NAVIGATION_SCREEN_GRAPH
-    ) {
-        composable(route = NavigationScreenRoute.Home.route) {
-            HomeScreen()
-        }
-        composable(route = NavigationScreenRoute.Podcast.route) {
-            PodcastsScreen()
-        }
-        composable(route = NavigationScreenRoute.Book.route) {
-            val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
-            val selectedBookViewModel =
-                it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
-            val selectedAudioBookViewModel =
-                it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
-            LaunchedEffect(true) { selectedBookViewModel.onSelectBook(null) }
-            BookHomeScreenRoot(
-                viewModel = bookHomeViewModel,
-                onBookClick = { book ->
-                    selectedBookViewModel.onSelectBook(book)
-                    rootNavController.navigate(
-                        Route.BookDetail(book.id)
-                    )
-                },
-                onAudioBookClick = { audioBook ->
-                    selectedAudioBookViewModel.onSelectBook(audioBook)
-                    rootNavController.navigate(
-                        Route.AudioBookDetail(audioBook.id)
-                    )
-                },
-                onSettingClick = {
-                    rootNavController.navigate(
-                        NavigationScreenRoute.Setting.route
-                    )
-                },
-                innerPadding = innerPadding
-            )
-        }
+    composable<Route.Home> {
+        HomeScreen()
+    }
 
-        composable<Route.AudioBookDetail> { it ->
-            val selectedAudioBookViewModel =
-                it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
-            val viewModel = koinViewModel<AudioBookDetailViewModel>()
-            val selectedAudioBook by selectedAudioBookViewModel.selectedBook.collectAsStateWithLifecycle()
-            LaunchedEffect(selectedAudioBook) {
-                selectedAudioBook?.let {
-                    viewModel.onAction(AudioBookDetailAction.OnSelectedBookChange(it))
-                }
-            }
-            AudioBookDetailScreenRoot(
-                viewModel = viewModel,
-                onBackClick = {
-                    rootNavController.navigateUp()
-                }
-            )
-        }
+    composable<Route.Podcast> {
+        PodcastsScreen()
+    }
 
-        composable<Route.BookDetail>(
-            enterTransition = {
-                fadeIn(animationSpec = tween(100)) + slideInHorizontally { initialOffset ->
-                    initialOffset
-                }
+    composable<Route.Book> {
+        val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
+        val selectedBookViewModel = it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
+        val selectedAudioBookViewModel = it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
+        LaunchedEffect(true) { selectedBookViewModel.onSelectBook(null) }
+        BookHomeScreenRoot(
+            viewModel = bookHomeViewModel,
+            onBookClick = { book ->
+                selectedBookViewModel.onSelectBook(book)
+                rootNavController.navigate(
+                    Route.BookDetail(book.id)
+                )
             },
-            exitTransition = {
-                fadeOut(animationSpec = tween(100)) + slideOutHorizontally { initialOffset ->
-                    initialOffset
-                }
+            onAudioBookClick = { audioBook ->
+                selectedAudioBookViewModel.onSelectBook(audioBook)
+                rootNavController.navigate(
+                    Route.AudioBookDetail(audioBook.id)
+                )
+            },
+            onSettingClick = {
+                rootNavController.navigate(
+                    Route.Setting
+                )
+            },
+            innerPadding = innerPadding
+        )
+    }
+
+    composable<Route.BookDetail>(
+        enterTransition = {
+            fadeIn(animationSpec = tween(100)) + slideInHorizontally { initialOffset ->
+                initialOffset
             }
-        ) { it ->
-
-            val selectedBookViewModel =
-                it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
-            val viewModel = koinViewModel<BookDetailViewModel>()
-            val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()
-
-            LaunchedEffect(selectedBook) {
-                selectedBook?.let {
-                    viewModel.onAction(BookDetailAction.OnSelectedBookChange(it))
-                }
+        },
+        exitTransition = {
+            fadeOut(animationSpec = tween(100)) + slideOutHorizontally { initialOffset ->
+                initialOffset
             }
-
-            BookDetailScreenRoot(
-                viewModel = viewModel,
-                onBackClick = {
-                    rootNavController.navigateUp()
-                }
-            )
         }
+    ) { it ->
+        val selectedBookViewModel = it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
+        val viewModel = koinViewModel<BookDetailViewModel>()
+        val selectedBook by selectedBookViewModel.selectedBook.collectAsStateWithLifecycle()
+        LaunchedEffect(selectedBook) {
+            selectedBook?.let {
+                viewModel.onAction(BookDetailAction.OnSelectedBookChange(it))
+            }
+        }
+        BookDetailScreenRoot(
+            viewModel = viewModel,
+            onBackClick = {
+                rootNavController.navigateUp()
+            }
+        )
+    }
 
-        composable(route = NavigationScreenRoute.Radio.route) {
+    composable<Route.AudioBookDetail> { it ->
+        val selectedAudioBookViewModel = it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
+        val viewModel = koinViewModel<AudioBookDetailViewModel>()
+        val selectedAudioBook by selectedAudioBookViewModel.selectedBook.collectAsStateWithLifecycle()
+        LaunchedEffect(selectedAudioBook) {
+            selectedAudioBook?.let {
+                viewModel.onAction(AudioBookDetailAction.OnSelectedBookChange(it))
+            }
+        }
+        AudioBookDetailScreenRoot(
+            viewModel = viewModel,
+            onBackClick = {
+                rootNavController.navigateUp()
+            }
+        )
+    }
+
+    composable<Route.Setting> {
+        SettingScreenRoot(
+            viewModel = settingViewModel,
+            innerPadding = innerPadding,
+            onBackClick = {
+                rootNavController.navigateUp()
+            }
+        )
+    }
+
+    navigation<Route.RadioGraph>(
+        startDestination = Route.Radio
+    ) {
+        composable<Route.Radio> {
             val radioHomeViewModel = koinViewModel<RadioHomeViewModel>()
-            val selectedRadioViewModel = it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
+            val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
             LaunchedEffect(true) {
-                selectedRadioViewModel.onSelectedRadio(null)
+                sharedRadioViewModel.onSelectedRadio(null)
             }
             RadioHomeScreenRoot(
                 viewModel = radioHomeViewModel,
                 onRadioClick = { radio ->
-                    selectedRadioViewModel.onSelectedRadio(radio)
+                    sharedRadioViewModel.onSelectedRadio(radio)
                     rootNavController.navigate(
                         Route.RadioDetail
                     )
                 },
                 onSettingClick = {
                     rootNavController.navigate(
-                        NavigationScreenRoute.Setting.route
+                        Route.Setting
                     )
+                },
+                onViewMoreClick = { viewMoreType ->
+                    rootNavController.navigate(Route.RadioViewMore(type = viewMoreType))
                 },
                 innerPadding = innerPadding
             )
         }
-
+        composable<Route.RadioViewMore> {
+            val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
+            ViewMoreScreenRoot(
+                onRadioClick = { radio ->
+                    sharedRadioViewModel.onSelectedRadio(radio)
+                    rootNavController.navigate(Route.RadioDetail)
+                },
+                onBackClick = { rootNavController.navigateUp() },
+                innerPadding = innerPadding
+            )
+        }
         composable<Route.RadioDetail> { it ->
-            val selectedRadioViewModel = it.sharedKoinViewModel<SelectedRadioViewModel>(rootNavController)
+            val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
             val viewModel = koinViewModel<RadioDetailViewModel>()
-            val selectedRadio by selectedRadioViewModel.selectedRadio.collectAsState()
-
+            val selectedRadio by sharedRadioViewModel.selectedRadio.collectAsState()
             LaunchedEffect(selectedRadio) {
                 selectedRadio?.let {
                     viewModel.onAction(RadioDetailAction.OnSelectedRadioChange(it))
@@ -174,13 +194,11 @@ fun NavGraphBuilder.navGraph(
                 }
             )
         }
-
         composable<Route.PlayerToRadioDetail> {
             val viewModel = koinViewModel<RadioDetailViewModel>()
-            val playerViewModel = koinViewModel<PlayerViewModel> ()
+            val playerViewModel = koinViewModel<PlayerViewModel>()
             val playerState by playerViewModel.state.collectAsState()
             val selectedRadio = playerState.selectedPlayer?.toRadio()
-
             LaunchedEffect(selectedRadio) {
                 selectedRadio?.let {
                     viewModel.onAction(RadioDetailAction.OnSelectedRadioChange(it))
@@ -195,6 +213,7 @@ fun NavGraphBuilder.navGraph(
         }
     }
 }
+
 
 @Composable
 private inline fun <reified T : ViewModel> NavBackStackEntry.sharedKoinViewModel(

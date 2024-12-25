@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.tawhid.airwaves.app.navigation.Route
 import org.tawhid.airwaves.core.theme.Shapes
 import org.tawhid.airwaves.core.theme.expandedNavigationBarWidth
 import org.tawhid.airwaves.core.theme.extraThin
@@ -28,7 +29,7 @@ import org.tawhid.airwaves.core.theme.thin
 fun ExpandedNavigationBar(
     modifier: Modifier = Modifier,
     items: List<NavigationItem>,
-    currentRoute: String?,
+    currentRoute: Route?,
     onItemClick: (NavigationItem) -> Unit
 ) {
     Row(modifier = modifier) {
@@ -38,7 +39,13 @@ fun ExpandedNavigationBar(
             header = { Spacer(modifier = Modifier.height(thin)) }
         ) {
             items.forEach { navigationItem ->
-                val isSelected = currentRoute == navigationItem.route
+                val isSelected =
+                    if (navigationItem.route == Route.RadioGraph && currentRoute == Route.RadioViewMore()) {
+                        true
+                    } else {
+                        navigationItem.route == currentRoute
+                    }
+
                 if (navigationItem == items.last()) {
                     Spacer(modifier = Modifier.height(thin))
                     HorizontalDivider(
