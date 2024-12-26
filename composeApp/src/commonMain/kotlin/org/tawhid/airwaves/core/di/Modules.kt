@@ -34,9 +34,10 @@ import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSource
 import org.tawhid.airwaves.radio.data.network.RemoteRadioDataSourceImpl
 import org.tawhid.airwaves.radio.data.repository.RadioRepositoryImpl
 import org.tawhid.airwaves.radio.domain.RadioRepository
-import org.tawhid.airwaves.radio.presentation.SelectedRadioViewModel
+import org.tawhid.airwaves.radio.presentation.SharedRadioViewModel
 import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailViewModel
 import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeViewModel
+import org.tawhid.airwaves.radio.presentation.view_more.RadioViewMoreViewModel
 
 expect val platformModule: Module
 
@@ -65,9 +66,10 @@ val sharedModule = module {
     viewModelOf(::AudioBookViewModel)
     viewModelOf(::BookDetailViewModel)
     viewModelOf(::RadioDetailViewModel)
+    viewModelOf(::RadioViewMoreViewModel)
     viewModelOf(::AudioBookDetailViewModel)
     viewModelOf(::SelectedAudioBookViewModel)
     viewModelOf(::SelectedBookViewModel)
-    viewModelOf(::SelectedRadioViewModel)
+    viewModelOf(::SharedRadioViewModel)
     viewModelOf(::SettingViewModel)
 }

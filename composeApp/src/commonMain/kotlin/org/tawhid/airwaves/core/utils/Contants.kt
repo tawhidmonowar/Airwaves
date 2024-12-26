@@ -28,10 +28,14 @@ sealed class WindowSize {
 
 object RadioViewMoreType {
     const val SAVED = "Saved"
-    const val RECENTLY_PLAYED = "RecentlyPlayed"
+    const val RECENTLY_PLAYED = "Recently Played"
     const val VERIFIED = "Verified"
     const val TRENDING = "Trending"
+    const val RANDOM = "Random"
 }
+
+const val TUNING_DELAY = 500L
+
 
 const val BASE_URL_RADIO = "https://de1.api.radio-browser.info/json/"
 

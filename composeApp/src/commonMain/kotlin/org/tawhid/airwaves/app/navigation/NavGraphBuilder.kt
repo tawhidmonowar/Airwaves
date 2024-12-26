@@ -33,6 +33,7 @@ import org.tawhid.airwaves.core.player.data.mappers.toRadio
 import org.tawhid.airwaves.core.player.presentation.PlayerViewModel
 import org.tawhid.airwaves.core.setting.SettingScreenRoot
 import org.tawhid.airwaves.core.setting.SettingViewModel
+import org.tawhid.airwaves.core.utils.RadioViewMoreType
 import org.tawhid.airwaves.presentations.home.HomeScreen
 import org.tawhid.airwaves.presentations.podcasts.PodcastsScreen
 import org.tawhid.airwaves.radio.presentation.SharedRadioViewModel
@@ -41,7 +42,9 @@ import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailScreenRoot
 import org.tawhid.airwaves.radio.presentation.radio_detail.RadioDetailViewModel
 import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeScreenRoot
 import org.tawhid.airwaves.radio.presentation.radio_home.RadioHomeViewModel
-import org.tawhid.airwaves.radio.presentation.radio_home.ViewMoreScreenRoot
+import org.tawhid.airwaves.radio.presentation.view_more.RadioViewMoreAction
+import org.tawhid.airwaves.radio.presentation.view_more.RadioViewMoreViewModel
+import org.tawhid.airwaves.radio.presentation.view_more.ViewMoreScreenRoot
 
 fun NavGraphBuilder.navGraphBuilder(
     rootNavController: NavController,
@@ -59,7 +62,8 @@ fun NavGraphBuilder.navGraphBuilder(
     composable<Route.Book> {
         val bookHomeViewModel = koinViewModel<BookHomeViewModel>()
         val selectedBookViewModel = it.sharedKoinViewModel<SelectedBookViewModel>(rootNavController)
-        val selectedAudioBookViewModel = it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
+        val selectedAudioBookViewModel =
+            it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
         LaunchedEffect(true) { selectedBookViewModel.onSelectBook(null) }
         BookHomeScreenRoot(
             viewModel = bookHomeViewModel,
@@ -113,7 +117,8 @@ fun NavGraphBuilder.navGraphBuilder(
     }
 
     composable<Route.AudioBookDetail> { it ->
-        val selectedAudioBookViewModel = it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
+        val selectedAudioBookViewModel =
+            it.sharedKoinViewModel<SelectedAudioBookViewModel>(rootNavController)
         val viewModel = koinViewModel<AudioBookDetailViewModel>()
         val selectedAudioBook by selectedAudioBookViewModel.selectedBook.collectAsStateWithLifecycle()
         LaunchedEffect(selectedAudioBook) {
@@ -146,12 +151,13 @@ fun NavGraphBuilder.navGraphBuilder(
             val radioHomeViewModel = koinViewModel<RadioHomeViewModel>()
             val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
             LaunchedEffect(true) {
-                sharedRadioViewModel.onSelectedRadio(null)
+                sharedRadioViewModel.updateSelectedRadio(null)
+                sharedRadioViewModel.updateViewMoreType(null)
             }
             RadioHomeScreenRoot(
                 viewModel = radioHomeViewModel,
                 onRadioClick = { radio ->
-                    sharedRadioViewModel.onSelectedRadio(radio)
+                    sharedRadioViewModel.updateSelectedRadio(radio)
                     rootNavController.navigate(
                         Route.RadioDetail
                     )
@@ -161,17 +167,28 @@ fun NavGraphBuilder.navGraphBuilder(
                         Route.Setting
                     )
                 },
-                onViewMoreClick = { viewMoreType ->
-                    rootNavController.navigate(Route.RadioViewMore(type = viewMoreType))
+                onViewMoreClick = { type ->
+                    sharedRadioViewModel.updateViewMoreType(type)
+                    rootNavController.navigate(
+                        Route.RadioViewMore
+                    )
                 },
                 innerPadding = innerPadding
             )
         }
         composable<Route.RadioViewMore> {
             val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
+            val viewModel = koinViewModel<RadioViewMoreViewModel>()
+            val currentViewMoreType by sharedRadioViewModel.currentViewMoreType.collectAsState()
+
+            currentViewMoreType?.let { type ->
+                viewModel.onAction(RadioViewMoreAction.OnViewMoreTypeChange(type))
+            }
+
             ViewMoreScreenRoot(
+                viewModel = viewModel,
                 onRadioClick = { radio ->
-                    sharedRadioViewModel.onSelectedRadio(radio)
+                    sharedRadioViewModel.updateSelectedRadio(radio)
                     rootNavController.navigate(Route.RadioDetail)
                 },
                 onBackClick = { rootNavController.navigateUp() },
@@ -179,9 +196,10 @@ fun NavGraphBuilder.navGraphBuilder(
             )
         }
         composable<Route.RadioDetail> { it ->
-            val sharedRadioViewModel = it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
+            val sharedRadioViewModel =
+                it.sharedKoinViewModel<SharedRadioViewModel>(rootNavController)
             val viewModel = koinViewModel<RadioDetailViewModel>()
-            val selectedRadio by sharedRadioViewModel.selectedRadio.collectAsState()
+            val selectedRadio by sharedRadioViewModel.currentSelectedRadio.collectAsState()
             LaunchedEffect(selectedRadio) {
                 selectedRadio?.let {
                     viewModel.onAction(RadioDetailAction.OnSelectedRadioChange(it))

@@ -8,7 +8,7 @@ sealed interface Route {
     @Serializable
     data object Radio : Route
     @Serializable
-    data class RadioViewMore(val type: String? = null): Route
+    data object RadioViewMore : Route
     @Serializable
     data object RadioDetail : Route
     @Serializable

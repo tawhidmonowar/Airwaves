@@ -25,7 +25,7 @@ fun CompactNavigationBar(
     ) {
         items.forEach { navigationItem ->
             val isSelected =
-                if (navigationItem.route == Route.RadioGraph && currentRoute == Route.RadioViewMore()) {
+                if (navigationItem.route == Route.RadioGraph && currentRoute == Route.RadioViewMore) {
                     true
                 } else {
                     navigationItem.route == currentRoute

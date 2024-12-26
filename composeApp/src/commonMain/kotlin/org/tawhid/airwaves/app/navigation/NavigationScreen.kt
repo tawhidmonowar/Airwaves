@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -48,7 +47,9 @@ fun NavigationScreenRoot(
 
     val navigationItems = if (isExpandedScreen || isMediumScreen) {
         navigationItemsLists + settingNavigationItems
-    } else { navigationItemsLists }
+    } else {
+        navigationItemsLists
+    }
 
     val rootNavController = rememberNavController()
     val rootNavBackStackEntry by rootNavController.currentBackStackEntryAsState()
@@ -66,7 +67,7 @@ fun NavigationScreenRoot(
             Route.Podcast,
             Route.Book,
             Route.RadioGraph,
-            Route.RadioViewMore()
+            Route.RadioViewMore
         ).apply {
             if (!isCompactScreen) {
                 add(Route.Setting)
@@ -125,16 +126,12 @@ private fun NavigationScreen(
         }
     ) { innerPadding ->
 
-        val contentPadding = if (isNavigationBarsVisible) {
-            if (isExpandedScreen) {
-                PaddingValues(start = expandedNavigationBarWidth)
-            } else if (isMediumScreen) {
-                PaddingValues(start = mediumNavigationBarWidth)
-            } else {
-                innerPadding
-            }
+        val contentPadding = if (isExpandedScreen) {
+            PaddingValues(start = expandedNavigationBarWidth)
+        } else if (isMediumScreen) {
+            PaddingValues(start = mediumNavigationBarWidth)
         } else {
-            PaddingValues(0.dp)
+            innerPadding
         }
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -209,7 +206,7 @@ private fun getCurrentRoute(currentRouteString: String): Route? {
         Route.Book::class.qualifiedName -> Route.Book
         Route.Setting::class.qualifiedName -> Route.Setting
         Route.Radio::class.qualifiedName -> Route.RadioGraph
-        Route.RadioViewMore()::class.qualifiedName -> Route.RadioViewMore()
+        Route.RadioViewMore::class.qualifiedName -> Route.RadioViewMore
         else -> null
     }
 }
