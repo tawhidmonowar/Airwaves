@@ -1,6 +1,7 @@
 package org.tawhid.airwaves.core.presentation.components
 
 import airwaves.composeapp.generated.resources.Res
+import airwaves.composeapp.generated.resources.clear_data
 import airwaves.composeapp.generated.resources.search
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
@@ -30,7 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import org.jetbrains.compose.resources.stringResource
 import org.tawhid.airwaves.core.theme.Shapes
-import org.tawhid.airwaves.core.theme.xxSmallPadding
+import org.tawhid.airwaves.core.theme.small
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,7 @@ fun EmbeddedSearchBar(
         },
         colors = SearchBarDefaults.colors(
             dividerColor = Color.Transparent,
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.background
         ),
         content = {
             content()
@@ -85,7 +87,7 @@ private fun EmbeddedSearchBarInputField(
 ) {
     TextField(
         modifier = Modifier
-            .padding(horizontal = xxSmallPadding)
+            .padding(horizontal = small)
             .focusRequester(focusRequester),
         shape = Shapes.small,
         value = TextFieldValue(
@@ -103,7 +105,6 @@ private fun EmbeddedSearchBarInputField(
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
-            unfocusedContainerColor = Color.White,
         ),
         leadingIcon = {
             IconButton(onClick = {
@@ -131,7 +132,7 @@ private fun EmbeddedSearchBarInputField(
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = null
+                        contentDescription = stringResource(Res.string.clear_data)
                     )
                 }
             }

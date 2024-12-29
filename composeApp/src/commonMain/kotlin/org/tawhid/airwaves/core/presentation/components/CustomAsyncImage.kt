@@ -17,20 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
 import org.jetbrains.compose.resources.painterResource
 import org.tawhid.airwaves.core.presentation.animation.PulseAnimation
 
 @Composable
 fun CustomAsyncImage(
-    imageUrl: String,
+    imageUrl: String?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
     placeholder: @Composable () -> Unit = { PulseAnimation(modifier = Modifier.fillMaxSize()) },
     errorImage: Painter = painterResource(Res.drawable.broken_image),
-    contentScale: ContentScale = ContentScale.Crop
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     var imgLoadResult by remember { mutableStateOf<Result<Painter>?>(null) }
 
@@ -47,15 +45,13 @@ fun CustomAsyncImage(
             }
         },
         onError = {
-            it.result.throwable.printStackTrace()
+           // it.result.throwable.printStackTrace()
             imgLoadResult = Result.failure(it.result.throwable)
         }
     )
 
-    val painterState by painter.state.collectAsStateWithLifecycle()
-
     val transition by animateFloatAsState(
-        targetValue = if (painterState is AsyncImagePainter.State.Success) 1f else 0f,
+        targetValue = 1f,
         animationSpec = tween(durationMillis = 800)
     )
 

@@ -199,6 +199,19 @@ inline fun FeedScope.action(
     }
 }
 
+inline fun FeedScope.single(
+    key: Any? = null,
+    contentType: Any? = null,
+    crossinline content: @Composable LazyGridItemScope.() -> Unit
+) = item(
+    key = key,
+    span = { GridItemSpan(maxLineSpan) },
+    contentType = contentType
+) {
+    content()
+}
+
+
 inline fun FeedScope.footer(
     key: Any? = null,
     contentType: Any? = null,
